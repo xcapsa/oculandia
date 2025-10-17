@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eventi VR - Oculandia VR</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Progressive Web App manifest & icons -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#0D1B2A">
+    <link rel="icon" href="/icons/icon-192.png" sizes="192x192">
+    <link rel="apple-touch-icon" href="/icons/icon-192.png" sizes="192x192">
+    <link rel="apple-touch-icon" href="/icons/icon-512.png" sizes="512x512">
+    <style>
+        :root {
+            --dark-blue: #0D1B2A;
+            --medium-blue: #1B263B;
+            --accent-green: #00A859;
+            --accent-red: #CE2B37;
+            --pure-white: #FFFFFF;
+            --light-gray: #D9D9D9;
+        }
+        
+        body {
+            background: var(--dark-blue);
+            color: var(--pure-white);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        
+        .orbitron { font-family: 'Orbitron', monospace; }
+        .jetbrains { font-family: 'JetBrains Mono', monospace; }
+        
+        .hero-gradient {
+            background: linear-gradient(135deg, var(--dark-blue) 0%, var(--medium-blue) 100%);
+        }
+        
+        .card-glass {
+            background: rgba(27, 38, 59, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .btn-primary {
+            background: var(--accent-green);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background: #00a859cc;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 168, 89, 0.3);
+        }
+        
+        .btn-secondary {
+            border: 2px solid var(--accent-green);
+            color: var(--accent-green);
+            background: transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            background: var(--accent-green);
+            color: var(--pure-white);
+            transform: translateY(-2px);
+        }
+        
+        .nav-bottom {
+            background: rgba(27, 38, 59, 0.95);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-item {
+            transition: all 0.3s ease;
+        }
+        
+        .nav-item.active {
+            color: var(--accent-green);
+        }
+        
+        .nav-item:hover {
+            color: var(--accent-green);
+            transform: translateY(-2px);
+        }
+        
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(27, 38, 59, 0.6);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .calendar-day:hover {
+            background: rgba(0, 168, 89, 0.2);
+        }
+        
+        .calendar-day.today {
+            background: var(--accent-green);
+            color: var(--pure-white);
+            font-weight: bold;
+        }
+        
+        .calendar-day.has-event {
+            background: rgba(206, 43, 55, 0.3);
+            border: 2px solid var(--accent-red);
+        }
+        
+        .calendar-day.has-event::after {
+            content: '';
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            width: 6px;
+            height: 6px;
+            background: var(--accent-red);
+            border-radius: 50%;
+        }
+        
+        .event-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .event-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .event-type-gaming { border-left: 4px solid #00A859; }
+        .event-type-tournament { border-left: 4px solid #CE2B37; }
+        .event-type-workshop { border-left: 4px solid #3B82F6; }
+        .event-type-meetup { border-left: 4px solid #8B5CF6; }
+        
+        .particle-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.3;
+        }
+        
+        .floating-action {
+            background: var(--accent-green);
+            box-shadow: 0 8px 25px rgba(0, 168, 89, 0.4);
+            transition: all 0.3s ease;
+        }
+        
+        .floating-action:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 35px rgba(0, 168, 89, 0.6);
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- Particle Background -->
+    <div id="particle-bg" class="particle-bg"></div>
+    
+    <!-- Header -->
+    <header class="hero-gradient p-4">
+        <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-gradient-to-r from-green-400 to-blue-500 rounded-full flex items-center justify-center">
+                    <span class="text-white font-bold text-lg orbitron">O</span>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold orbitron">Eventi VR</h1>
+                    <p class="text-sm text-gray-300">Meetup, tornei e workshop</p>
+                </div>
+            </div>
+            <button class="p-2 rounded-full bg-white/10 backdrop-blur-sm">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5-5-5h5v-12"></path>
+                </svg>
+            </button>
+        </div>
+        
+        <!-- Quick Stats -->
+        <div class="grid grid-cols-3 gap-4">
+            <div class="card-glass rounded-xl p-3 text-center">
+                <div class="text-xl font-bold text-green-400 orbitron">12</div>
+                <div class="text-xs text-gray-300">Eventi Questo Mese</div>
+            </div>
+            <div class="card-glass rounded-xl p-3 text-center">
+                <div class="text-xl font-bold text-blue-400 orbitron">89</div>
+                <div class="text-xs text-gray-300">Partecipanti</div>
+            </div>
+            <div class="card-glass rounded-xl p-3 text-center">
+                <div class="text-xl font-bold text-purple-400 orbitron">4</div>
+                <div class="text-xs text-gray-300">Tornei</div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Calendar Section -->
+    <section class="px-4 py-6">
+        <div class="card-glass rounded-xl p-4 mb-6">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-lg font-semibold orbitron">Ottobre 2024</h2>
+                <div class="flex space-x-2">
+                    <button class="p-2 rounded-lg bg-gray-700 hover:bg-gray-600 transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                        </svg>
+                    </button>
+                    <button class="p-2 rounded-lg bg-gray-700 hover:bg-gray-600 transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Calendar Header -->
+            <div class="grid grid-cols-7 gap-1 mb-2">
+                <div class="text-center text-sm text-gray-400 py-2">Lun</div>
+                <div class="text-center text-sm text-gray-400 py-2">Mar</div>
+                <div class="text-center text-sm text-gray-400 py-2">Mer</div>
+                <div class="text-center text-sm text-gray-400 py-2">Gio</div>
+                <div class="text-center text-sm text-gray-400 py-2">Ven</div>
+                <div class="text-center text-sm text-gray-400 py-2">Sab</div>
+                <div class="text-center text-sm text-gray-400 py-2">Dom</div>
+            </div>
+            
+            <!-- Calendar Grid -->
+            <div class="calendar-grid">
+                <!-- October 2024 -->
+                <div class="calendar-day text-gray-500">30</div>
+                <div class="calendar-day">1</div>
+                <div class="calendar-day">2</div>
+                <div class="calendar-day">3</div>
+                <div class="calendar-day">4</div>
+                <div class="calendar-day">5</div>
+                <div class="calendar-day">6</div>
+                <div class="calendar-day">7</div>
+                <div class="calendar-day">8</div>
+                <div class="calendar-day">9</div>
+                <div class="calendar-day">10</div>
+                <div class="calendar-day">11</div>
+                <div class="calendar-day">12</div>
+                <div class="calendar-day">13</div>
+                <div class="calendar-day today">14</div>
+                <div class="calendar-day has-event" onclick="showEventDetails('torneo-beatsaber')">15</div>
+                <div class="calendar-day">16</div>
+                <div class="calendar-day">17</div>
+                <div class="calendar-day">18</div>
+                <div class="calendar-day has-event" onclick="showEventDetails('vr-marathon')">19</div>
+                <div class="calendar-day has-event" onclick="showEventDetails('workshop-dev')">20</div>
+                <div class="calendar-day">21</div>
+                <div class="calendar-day">22</div>
+                <div class="calendar-day">23</div>
+                <div class="calendar-day">24</div>
+                <div class="calendar-day">25</div>
+                <div class="calendar-day">26</div>
+                <div class="calendar-day">27</div>
+                <div class="calendar-day">28</div>
+                <div class="calendar-day">29</div>
+                <div class="calendar-day">30</div>
+                <div class="calendar-day">31</div>
+            </div>
+        </div>
+        
+        <!-- Filter Tabs -->
+        <div class="flex space-x-2 mb-6 overflow-x-auto">
+            <button class="px-4 py-2 rounded-full text-sm whitespace-nowrap bg-green-600 text-white">Tutti</button>
+            <button class="px-4 py-2 rounded-full text-sm whitespace-nowrap bg-gray-700 text-gray-300">Gaming</button>
+            <button class="px-4 py-2 rounded-full text-sm whitespace-nowrap bg-gray-700 text-gray-300">Tornei</button>
+            <button class="px-4 py-2 rounded-full text-sm whitespace-nowrap bg-gray-700 text-gray-300">Workshop</button>
+            <button class="px-4 py-2 rounded-full text-sm whitespace-nowrap bg-gray-700 text-gray-300">Meetup</button>
+        </div>
+        
+        <!-- Upcoming Events -->
+        <div class="mb-6">
+            <h3 class="text-lg font-semibold orbitron mb-4">Prossimi Eventi</h3>
+            
+            <div class="space-y-4 mb-20">
+                <!-- Event Card 1 -->
+                <div class="event-card event-type-tournament card-glass rounded-xl p-4">
+                    <div class="flex items-start space-x-3 mb-3">
+                        <div class="w-12 h-12 bg-gradient-to-r from-red-500 to-pink-600 rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"></path>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-semibold text-lg">Torneo Beat Saber Championship</h4>
+                            <p class="text-sm text-gray-300 mb-2">Competizione ufficiale con premi in palio</p>
+                            <div class="flex items-center space-x-4 text-sm text-gray-400">
+                                <span class="flex items-center space-x-1">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                    </svg>
+                                    <span>15 Ott, 18:00</span>
+                                </span>
+                                <span class="flex items-center space-x-1">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    </svg>
+                                    <span>Roma Esports Arena</span>
+                                </span>
+                                <span class="flex items-center space-x-1">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
+                                    </svg>
+                                    <span>16/20</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <p class="text-sm text-gray-300 mb-3">
+                            Il torneo ufficiale di Beat Saber con premi per i primi 3 classificati. 
+                            Sistema di qualificazione e bracket eliminatorio. Porta il tuo VR setup!
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-2 py-1 bg-red-500/20 text-red-400 text-xs rounded-full">Torneo</span>
+                            <span class="px-2 py-1 bg-yellow-500/20 text-yellow-400 text-xs rounded-full">Premi €500</span>
+                            <span class="px-2 py-1 bg-blue-500/20 text-blue-400 text-xs rounded-full">Beat Saber</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex space-x-3">
+                        <button class="btn-primary flex-1 py-2 px-4 rounded-lg text-sm" onclick="joinEvent('torneo-beatsaber')">
+                            Partecipa
+                        </button>
+                        <button class="btn-secondary py-2 px-4 rounded-lg text-sm" onclick="shareEvent('torneo-beatsaber')">
+                            Condividi
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Event Card 2 -->
+                <div class="event-card event-type-gaming card-glass rounded-xl p-4">
+                    <div class="flex items-start space-x-3 mb-3">
+                        <div class="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-600 rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-semibold text-lg">VR Gaming Marathon</h4>
+                            <p class="text-sm text-gray-300 mb-2">12 ore di gaming VR non-stop</p>
+                            <div class="flex items-center space-x-4 text-sm text-gray-400">
+                                <span class="flex items-center space-x-1">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                    </svg>
+                                    <span>19 Ott, 14:00</span>
+                                </span>
+                                <span class="flex items-center space-x-1">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    </svg>
+                                    <span>Milano VR Center</span>
+                                </span>
+                                <span class="flex items-center space-x-1">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
+                                    </svg>
+                                    <span>24/30</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <p class="text-sm text-gray-300 mb-3">
+                            Marathon di 12 ore con diversi giochi VR: Beat Saber, Half-Life: Alyx, Superhot VR, e molti altri. 
+                            Cibo e bevande incluse!
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-2 py-1 bg-green-500/20 text-green-400 text-xs rounded-full">Gaming</span>
+                            <span class="px-2 py-1 bg-purple-500/20 text-purple-400 text-xs rounded-full">12 Ore</span>
+                            <span class="px-2 py-1 bg-orange-500/20 text-orange-400 text-xs rounded-full">Cibo Incluso</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex space-x-3">
+                        <button class="btn-primary flex-1 py-2 px-4 rounded-lg text-sm" onclick="joinEvent('vr-marathon')">
+                            Partecipa
+                        </button>
+                        <button class="btn-secondary py-2 px-4 rounded-lg text-sm" onclick="shareEvent('vr-marathon')">
+                            Condividi
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Event Card 3 -->
+                <div class="event-card event-type-workshop card-glass rounded-xl p-4">
+                    <div class="flex items-start space-x-3 mb-3">
+                        <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-600 rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-semibold text-lg">VR Development Workshop</h4>
+                            <p class="text-sm text-gray-300 mb-2">Impara a creare giochi VR con Unity</p>
+                            <div class="flex items-center space-x-4 text-sm text-gray-400">
+                                <span class="flex items-center space-x-1">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                    </svg>
+                                    <span>20 Ott, 10:00</span>
+                                </span>
+                                <span class="flex items-center space-x-1">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9v-9m0-9v9"></path>
+                                    </svg>
+                                    <span>Online</span>
+                                </span>
+                                <span class="flex items-center space-x-1">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
+                                    </svg>
+                                    <span>45/50</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <p class="text-sm text-gray-300 mb-3">
+                            Workshop intensivo di 6 ore su Unity e VR development. 
+                            Dalle basi di C# all'implementazione di gameplay VR. 
+                            Certificato finale incluso.
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-2 py-1 bg-blue-500/20 text-blue-400 text-xs rounded-full">Workshop</span>
+                            <span class="px-2 py-1 bg-green-500/20 text-green-400 text-xs rounded-full">Unity</span>
+                            <span class="px-2 py-1 bg-purple-500/20 text-purple-400 text-xs rounded-full">Certificato</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex space-x-3">
+                        <button class="btn-primary flex-1 py-2 px-4 rounded-lg text-sm" onclick="joinEvent('workshop-dev')">
+                            Partecipa
+                        </button>
+                        <button class="btn-secondary py-2 px-4 rounded-lg text-sm" onclick="shareEvent('workshop-dev')">
+                            Condividi
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Floating Action Button -->
+    <button class="floating-action fixed bottom-20 right-4 w-14 h-14 rounded-full flex items-center justify-center z-20" onclick="createEvent()">
+        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+        </svg>
+    </button>
+    
+    <!-- Bottom Navigation -->
+    <nav class="nav-bottom fixed bottom-0 left-0 right-0 z-30">
+        <div class="flex items-center justify-around py-3">
+            <a href="index.html" class="nav-item flex flex-col items-center space-y-1">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+                </svg>
+                <span class="text-xs">Home</span>
+            </a>
+            <a href="events.html" class="nav-item active flex flex-col items-center space-y-1">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                </svg>
+                <span class="text-xs">Eventi</span>
+            </a>
+            <a href="deals.html" class="nav-item flex flex-col items-center space-y-1">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+                </svg>
+                <span class="text-xs">Sconti</span>
+            </a>
+            <a href="shop.html" class="flex flex-col items-center space-y-1 text-white">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                </svg>
+                <span class="text-xs">Shop</span>
+            </a>
+            <a href="friends.html" class="nav-item flex flex-col items-center space-y-1">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5V9H2v11h5m10 0v-6h4v6m-4 0h-4m0 0H7m0 0H5a2 2 0 01-2-2V9m18-5H3m18 0l-2 5m2-5l-2 5" />
+                </svg>
+                <span class="text-xs">Amici</span>
+            </a>
+            <a href="profile.html" class="nav-item flex flex-col items-center space-y-1">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                </svg>
+                <span class="text-xs">Profilo</span>
+            </a>
+        </div>
+    </nav>
+    
+    <script>
+        // Event management functions
+        function showEventDetails(eventId) {
+            const events = {
+                'torneo-beatsaber': {
+                    title: 'Torneo Beat Saber Championship',
+                    date: '15 Ottobre 2024',
+                    time: '18:00 - 22:00',
+                    location: 'Roma Esports Arena',
+                    description: 'Torneo competitivo con sistema eliminatorio e premi per i vincitori.'
+                },
+                'vr-marathon': {
+                    title: 'VR Gaming Marathon',
+                    date: '19 Ottobre 2024',
+                    time: '14:00 - 02:00',
+                    location: 'Milano VR Center',
+                    description: '12 ore consecutive di gaming VR con diversi titoli e attività.'
+                },
+                'workshop-dev': {
+                    title: 'VR Development Workshop',
+                    date: '20 Ottobre 2024',
+                    time: '10:00 - 16:00',
+                    location: 'Online',
+                    description: 'Workshop intensivo su Unity e VR development per principianti.'
+                }
+            };
+            
+            const event = events[eventId];
+            if (event) {
+                alert(`Dettagli Evento:\n\n${event.title}\n${event.date} - ${event.time}\n${event.location}\n\n${event.description}`);
+            }
+        }
+        
+        function joinEvent(eventId) {
+            // Simulate joining event
+            const button = event.target;
+            button.textContent = 'Iscritto ✓';
+            button.classList.remove('btn-primary');
+            button.classList.add('bg-gray-600', 'cursor-not-allowed');
+            button.disabled = true;
+            
+            // Show success message
+            showToast('Iscrizione confermata! 🎉');
+        }
+        
+        function shareEvent(eventId) {
+            showToast('Evento condiviso! 📤');
+        }
+        
+        function createEvent() {
+            showModal('Crea Nuovo Evento', `
+                <div class="space-y-4">
+                    <input type="text" placeholder="Titolo evento" class="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-600 focus:border-green-400 outline-none">
+                    <select class="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-600 focus:border-green-400 outline-none">
+                        <option>Tipo evento...</option>
+                        <option>Gaming</option>
+                        <option>Torneo</option>
+                        <option>Workshop</option>
+                        <option>Meetup</option>
+                    </select>
+                    <input type="datetime-local" class="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-600 focus:border-green-400 outline-none">
+                    <input type="text" placeholder="Location" class="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-600 focus:border-green-400 outline-none">
+                    <textarea placeholder="Descrizione evento..." class="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-600 focus:border-green-400 outline-none" rows="3"></textarea>
+                </div>
+            `, [
+                { text: 'Crea Evento', class: 'btn-primary' }
+            ]);
+        }
+        
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'fixed top-4 right-4 z-50 px-6 py-3 rounded-lg text-white bg-green-600';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            anime({
+                targets: toast,
+                translateX: [300, 0],
+                opacity: [0, 1],
+                duration: 300,
+                easing: 'easeOutCubic'
+            });
+            
+            setTimeout(() => {
+                anime({
+                    targets: toast,
+                    translateX: [0, 300],
+                    opacity: [1, 0],
+                    duration: 300,
+                    easing: 'easeInCubic',
+                    complete: () => toast.remove()
+                });
+            }, 3000);
+        }
+        
+        function showModal(title, content, actions) {
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black/50 flex items-center justify-center z-50';
+            const modalContent = document.createElement('div');
+            modalContent.className = 'card-glass rounded-xl p-6 m-4 max-w-sm w-full';
+            
+            modalContent.innerHTML = `
+                <h3 class="text-xl font-bold mb-4 orbitron">${title}</h3>
+                <div class="mb-6">${content}</div>
+                <div class="flex space-x-3">
+                    ${actions.map(action => `<button class="${action.class} flex-1 py-2 px-4 rounded-lg">${action.text}</button>`).join('')}
+                    <button class="btn-secondary flex-1 py-2 px-4 rounded-lg" onclick="this.closest('.fixed').remove()">Annulla</button>
+                </div>
+            `;
+            
+            modal.appendChild(modalContent);
+            document.body.appendChild(modal);
+            
+            anime({
+                targets: modalContent,
+                translateY: [30, 0],
+                opacity: [0, 1],
+                duration: 300,
+                easing: 'easeOutCubic'
+            });
+        }
+    </script>
+    <script src="main.js"></script>
+</body>
+</html>
