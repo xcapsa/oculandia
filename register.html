@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registrati – Oculandia VR</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#0D1B2A" />
+    <link rel="icon" href="/icons/icon-192.png" sizes="192x192" />
+    <link rel="apple-touch-icon" href="/icons/icon-192.png" sizes="192x192" />
+    <style>
+        body {
+            background: #0D1B2A;
+            color: #FFFFFF;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        .card {
+            background: rgba(27, 38, 59, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 2rem;
+            width: 100%;
+            max-width: 420px;
+        }
+        .btn-primary {
+            background: #00A859;
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            background: #00a859cc;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 168, 89, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1 class="text-2xl font-bold orbitron mb-4 text-center">Registrati</h1>
+        <form id="registerForm" class="space-y-4">
+            <input id="reg-email" type="email" placeholder="Email" required
+                class="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-600 focus:border-green-400 outline-none" />
+            <input id="reg-display-name" type="text" placeholder="Nome visualizzato" required
+                class="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-600 focus:border-green-400 outline-none" />
+            <input id="reg-password" type="password" placeholder="Password" required minlength="6"
+                class="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-600 focus:border-green-400 outline-none" />
+            <button type="submit" class="btn-primary w-full py-3 rounded-lg text-base font-medium">Registrati</button>
+        </form>
+        <p class="text-sm text-gray-400 mt-4 text-center">Hai già un account? <a href="login.html" class="text-green-400 hover:underline">Accedi</a></p>
+        <div id="register-message" class="text-sm text-red-500 mt-3 text-center" style="display:none;"></div>
+    </div>
+    <script src="register.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
