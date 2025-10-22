@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Accedi – Oculandia VR</title>
+    <!-- Librerie esterne per stile e animazioni -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <!-- Manifest e icone per PWA -->
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#0D1B2A" />
+    <link rel="icon" href="/icons/icon-192.png" sizes="192x192" />
+    <link rel="apple-touch-icon" href="/icons/icon-192.png" sizes="192x192" />
+    <style>
+        body {
+            background: #0D1B2A;
+            color: #FFFFFF;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        .card {
+            background: rgba(27, 38, 59, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 2rem;
+            width: 100%;
+            max-width: 420px;
+        }
+        .btn-primary {
+            background: #00A859;
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            background: #00a859cc;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 168, 89, 0.3);
+        }
+        .btn-secondary {
+            border: 2px solid #00A859;
+            color: #00A859;
+            background: transparent;
+            transition: all 0.3s ease;
+        }
+        .btn-secondary:hover {
+            background: #00A859;
+            color: #FFFFFF;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1 class="text-2xl font-bold orbitron mb-4 text-center">Accedi</h1>
+        <form id="loginForm" class="space-y-4">
+            <input id="email" type="email" placeholder="Email" required
+                class="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-600 focus:border-green-400 outline-none" />
+            <input id="password" type="password" placeholder="Password" required minlength="6"
+                class="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-600 focus:border-green-400 outline-none" />
+            <button type="submit" class="btn-primary w-full py-3 rounded-lg text-base font-medium">Accedi</button>
+        </form>
+        <p class="text-sm text-gray-400 mt-4 text-center">Non hai un account? <a href="register.html" class="text-green-400 hover:underline">Registrati</a></p>
+        <div id="login-message" class="text-sm text-red-500 mt-3 text-center" style="display:none;"></div>
+        <!-- Pulsanti di login tramite provider esterni -->
+        <div class="mt-4 space-y-3">
+            <button id="google-login" class="btn-secondary w-full py-3 rounded-lg text-base font-medium">Accedi con Google</button>
+            <button id="apple-login" class="btn-secondary w-full py-3 rounded-lg text-base font-medium">Accedi con Apple</button>
+            <!-- Contenitore per il bottone Telegram (viene popolato via script) -->
+            <div id="telegram-login-container" class="flex justify-center"></div>
+        </div>
+    </div>
+    <script src="login.js"></script>
+    <script>
+    // Listener per pulsanti Google e Apple
+    document.addEventListener('DOMContentLoaded', () => {
+        const googleBtn = document.getElementById('google-login');
+        const appleBtn = document.getElementById('apple-login');
+        if (googleBtn) {
+            googleBtn.addEventListener('click', () => {
+                window.location.href = '/auth/google';
+            });
+        }
+        if (appleBtn) {
+            appleBtn.addEventListener('click', () => {
+                window.location.href = '/auth/apple';
+            });
+        }
+    });
+
+    // Callback richiamata dal widget Telegram
+    function onTelegramAuth(user) {
+        try {
+            const params = new URLSearchParams(user).toString();
+            fetch('/auth/telegram', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify({ init_data: params })
+            }).then(res => {
+                if (res.ok) {
+                    window.location.href = 'profile.html';
+                } else {
+                    return res.json().then(data => { throw new Error(data.error); });
+                }
+            }).catch(err => {
+                const messageEl = document.getElementById('login-message');
+                messageEl.textContent = 'Errore login Telegram: ' + (err.message || '');
+                messageEl.style.display = 'block';
+            });
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    // Inizializza il widget Telegram quando la pagina è caricata
+    window.addEventListener('load', () => {
+        const container = document.getElementById('telegram-login-container');
+        if (container) {
+            const script = document.createElement('script');
+            script.async = true;
+            script.src = 'https://telegram.org/js/telegram-widget.js?22';
+            // Sostituisci BOT_USERNAME con il tuo bot da BotFather
+            script.setAttribute('data-telegram-login', 'BOT_USERNAME');
+            script.setAttribute('data-size', 'large');
+            script.setAttribute('data-userpic', 'false');
+            script.setAttribute('data-request-access', 'write');
+            script.setAttribute('data-onauth', 'onTelegramAuth(user)');
+            container.appendChild(script);
+        }
+    });
+    </script>
+    <script src="main.js"></script>
+</body>
+</html>

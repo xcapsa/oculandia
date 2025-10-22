@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop – Oculandia VR</title>
+    <link rel="icon" href="icons/icon-512.png" type="image/png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --dark-blue: #0D1B2A;
+            --medium-blue: #1B263B;
+            --accent-green: #00A859;
+            --accent-red: #CE2B37;
+            --pure-white: #FFFFFF;
+        }
+
+        body {
+            background: var(--dark-blue);
+            color: var(--pure-white);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .orbitron {
+            font-family: 'Orbitron', monospace;
+        }
+        /* iframe full-viewport sotto header */
+        #hoplix-iframe {
+            width: 100%;
+            height: calc(100vh - 128px); /* header 64 + bottom 64 */
+            border: none;
+        }
+    </style>
+</head>
+
+<body class="overflow-hidden">
+    <!-- HEADER IDENTICO A SHOP.HTML -->
+    <header class="h-16 px-4 flex items-center justify-between bg-[var(--dark-blue)]/80 backdrop-blur">
+        <div class="flex items-center space-x-3">
+            <img src="icons/icon-192.png" alt="Logo" class="w-10 h-10 rounded-full">
+            <h1 class="text-xl font-bold orbitron">Shop VR</h1>
+        </div>
+        <div class="flex items-center space-x-4">
+            <input id="search" type="text" placeholder="Cerca prodotto…"
+                   class="hidden md:block w-48 py-2 px-3 rounded-full text-sm bg-[var(--medium-blue)] text-white placeholder-gray-400 outline-none focus:ring-2 focus:ring-[var(--accent-green)]">
+            <a href="https://oculandia-stuff.hoplix.shop/cart" target="_blank" class="relative p-2 rounded-full bg-white/10">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+            </a>
+        </div>
+    </header>
+
+    <!-- IFRAME FULL-SCREEN al tuo negozio -->
+    <iframe id="hoplix-iframe" src="https://oculandia-stuff.hoplix.shop/#page-1"></iframe>
+    <!-- Bottom Navigation -->
+    <nav class="nav-bottom fixed bottom-0 left-0 right-0 z-30">
+        <div class="flex items-center justify-around py-3">
+            <a href="index.html" class="nav-item flex-1 flex flex-col items-center justify-center gap-1 min-h-[56px] select-none">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+                </svg>
+                <span class="text-xs">Home</span>
+            </a>
+            <a href="events.html" class="nav-item flex-1 flex flex-col items-center justify-center gap-1 min-h-[56px] select-none ">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                </svg>
+                <span class="text-xs">Eventi</span>
+            </a>
+            <a href="deals.html" class="nav-item flex-1 flex flex-col items-center justify-center gap-1 min-h-[56px] select-none ">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+                </svg>
+                <span class="text-xs">Sconti</span>
+            </a>
+            <a href="shop.html" class="nav-item flex-1 flex flex-col items-center justify-center gap-1 min-h-[56px] select-none text-green-600">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                </svg>
+                <span class="text-xs">Shop</span>
+            </a>
+            <a href="social.html" class="nav-item flex-1 flex flex-col items-center justify-center gap-1 min-h-[56px] select-none ">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"></path>
+                </svg>
+                <span class="text-xs">
+                    Social
+                </span>
+            </a>
+            <a href="minecraft.html" class="nav-item flex-1 flex flex-col items-center justify-center gap-1 min-h-[56px] select-none ">
+                <svg class="w-6 h-6 block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2l7 4v8l-7 4-7-4V6l7-4zm0 0v8m0 0l7-4m-7 4l-7-4" /></svg>
+                <span class="text-[11px] leading-none whitespace-nowrap">Minecraft</span>
+            </a>
+        </div>
+    </nav>
+</body>
+</html>
