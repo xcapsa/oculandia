@@ -1,49 +1,65 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Minecraft • Oculandia</title>
-  <link rel="icon" href="icons/icon-512.png" type="image/png">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --dark: #0b0f14;
-      --glass: rgba(10,10,10,.55);
-      --accent: #00a859;
-    }
-    body {
-      font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
-      color: #fff;
-      min-height: 100dvh;
-      overflow-x: hidden;
-      background: #000;
-    }
-    /* blurred bg */
-    .bg-blur::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background: url('resources/minecraft-blurred.jpg') center/cover no-repeat;
-      filter: blur(10px) brightness(.8);
-      transform: scale(1.05);
-      z-index: -2;
-    }
-    .bg-overlay::after {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background: linear-gradient(180deg, rgba(0,0,0,.45), rgba(0,0,0,.65));
-      z-index: -1;
-    }
-    .glass {
-      background: var(--glass);
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(255,255,255,.08);
-      box-shadow: 0 6px 30px rgba(0,0,0,.3);
-    }
-    .nav-bottom {
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Minecraft • Oculandia</title>
+    <link rel="icon" href="icons/icon-512.png" type="image/png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --dark: #0b0f14;
+            --glass: rgba(10,10,10,.55);
+            --accent: #00a859;
+            --dark-blue: #0D1B2A;
+            --medium-blue: #1B263B;
+            --accent-green: #00A859;
+            --pure-white: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #fff;
+            min-height: 100dvh;
+            overflow-x: hidden;
+            background: #000;
+        }
+
+        .orbitron {
+            font-family: 'Orbitron', monospace;
+        }
+
+        .hero-gradient {
+            background: transparent;
+        }
+        /* blurred bg */
+        .bg-blur::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background: url('resources/minecraft-blurred.jpg') center/cover no-repeat;
+            filter: blur(10px) brightness(.8);
+            transform: scale(1.05);
+            z-index: -2;
+        }
+
+        .bg-overlay::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(0,0,0,.45), rgba(0,0,0,.65));
+            z-index: -1;
+        }
+
+        .glass {
+            background: var(--glass);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,.08);
+            box-shadow: 0 6px 30px rgba(0,0,0,.3);
+        }
+
+        .nav-bottom {
             background: rgba(27, 38, 59, 0.95);
             backdrop-filter: blur(20px);
             border-top: 1px solid rgba(255, 255, 255, 0.1);
@@ -61,100 +77,114 @@
                 color: var(--accent-green);
                 transform: translateY(-2px);
             }
-    .chat-bg {
-      position: fixed;
-      left: 0; right: 0; bottom: 64px; top: 0;
-      pointer-events: none;
-      opacity: .25;
-      font-size: 14px;
-      line-height: 1.4;
-      padding: 12px;
-      white-space: pre-line;
-      mask-image: linear-gradient(to top, transparent, black 20%, black 80%, transparent);
-    }
-  </style>
+
+        .chat-bg {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 64px;
+            top: 0;
+            pointer-events: none;
+            opacity: .25;
+            font-size: 14px;
+            line-height: 1.4;
+            padding: 12px;
+            white-space: pre-line;
+            mask-image: linear-gradient(to top, transparent, black 20%, black 80%, transparent);
+        }
+    </style>
 </head>
 <body class="bg-blur bg-overlay">
-  <header class="p-4 flex items-center justify-between">
-    <div class="flex items-center gap-3">
-      <img src="icons/icon-192.png" alt="Logo" class="w-10 h-10 rounded-lg">
-      <h1 class="text-xl font-semibold">Minecraft @ Oculandia</h1>
-    </div>
-  </header>
+    <!-- Header -->
+    <header class="hero-gradient p-4">
+        <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center space-x-3">
+                <img src="icons/icon-192.png" alt="Logo Oculandia VR" class="w-10 h-10 rounded-full">
+                <div>
+                    <h1 class="text-xl font-bold orbitron">Minecraft</h1>
+                    <p class="text-sm font-bold orbitron text-gray-300">Costruire in VR</p>
+                </div>
+            </div>
+            <button class="p-2 rounded-full bg-white/10 backdrop-blur-sm">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5-5-5h5v-12"></path>
+                </svg>
+            </button>
+        </div>
+    </header>
 
-  <!-- auto-scrolling chat-like background (placeholder) -->
-  <div id="chatBg" class="chat-bg font-mono"></div>
+    <!-- auto-scrolling chat-like background (placeholder) -->
+    <div id="chatBg" class="chat-bg font-mono"></div>
 
-  <main class="px-4 pb-24 flex flex-col items-center gap-6">
-  
-    <!-- Blocco 1: Video consigliato -->
-    <section class="glass rounded-2xl w-full max-w-4xl p-5">
-      <h2 class="text-lg font-semibold mb-3">Video consigliato</h2>
-      <div class="aspect-video rounded-xl overflow-hidden border border-white/10">
-        <iframe
-          class="w-full h-full"
-          src="https://www.youtube.com/embed/5SEx265X4FA"
-          title="YouTube video player" frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
-        </iframe>
-      </div>
-    </section>
+    <main class="px-4 pb-24 flex flex-col items-center gap-6">
 
-  
-    <!-- Blocco 2: Lista mod necessarie -->
-    <section class="glass rounded-2xl w-full max-w-4xl p-5">
-      <h2 class="text-lg font-semibold mb-3">LISTA DI MOD NECESSARIE per la versione 1.21.5</h2>
-      <div class="prose prose-invert max-w-none text-white/90">
-        <p><strong>VIVECRAFT</strong> – necessaria per giocare in VR → <a href="https://modrinth.com/mod/vivecraft" target="_blank" rel="noopener">https://modrinth.com/mod/vivecraft</a></p>
-        <p>--------------</p>
-        <p><strong>SIMPLE VOICE CHAT</strong> – chat vocale in-game → <a href="https://modrinth.com/plugin/simple-voice-chat" target="_blank" rel="noopener">https://modrinth.com/plugin/simple-voice-chat</a></p>
-      </div>
-    </section>
-
-  <!-- Sezione 3: Chat live del server -->
-  <section class="glass rounded-2xl w-full max-w-4xl p-5">
-      <h2 class="text-lg font-semibold mb-3">Stato del server</h2>
-      
-      <div class="flex items-center gap-3 mb-4">
-        <div class="text-sm">Indirizzo server</div>
-        <div class="px-3 py-2 rounded-lg bg-black/40 border border-white/10 select-all">eu8008903.g-portal.game</div>
-      </div>
-      <div id="serverStatus" class="grid grid-cols-1 gap-2">
-        <div class="flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-yellow-400" id="dot"></div><span id="onoff">In attesa...</span></div>
-        <div class="text-white/80"><span class="font-semibold">Giocatori:</span> <span id="players">--</span></div>
-        <div class="text-white/80"><span class="font-semibold">MOTD:</span> <span id="motd">--</span></div>
-        <div class="text-white/80"><span class="font-semibold">Versione:</span> <span id="version">--</span></div>
-      </div>
-    </section>
-  <section class="glass rounded-2xl w-full max-w-4xl p-5">
-   
-    <section class="glass rounded-2xl w-full max-w-4xl p-5">
-  <div class="flex items-center justify-between mb-3">
-    <h2 class="text-lg font-semibold">Chat del server</h2>
-    <span id="chatConn" class="text-xs text-white/60">Disconnesso</span>
-  </div>
-
-  <!-- Fancy "Coming Soon" Notice  for live chat Highdrasyl was here xD-->
-  <div class="h-64 flex flex-col items-center justify-center text-center rounded-xl bg-black/30 border border-white/10 p-6">
-    <div class="animate-pulse">
-      <h3 class="text-2xl font-bold text-white/90 mb-2">💬 Live Chat in arrivo!</h3>
-      <p class="text-white/60 text-sm">Stiamo lavorando per offrirti una chat live dei giocatori sul server.</p>
-      <p class="text-white/40 italic mt-1">Resta sintonizzato…</p>
-    </div>
-  </div>
-</section>
+        <!-- Blocco 1: Video consigliato -->
+        <section class="glass rounded-2xl w-full max-w-4xl p-5">
+            <h2 class="text-lg font-semibold mb-3">Video consigliato</h2>
+            <div class="aspect-video rounded-xl overflow-hidden border border-white/10">
+                <iframe class="w-full h-full"
+                        src="https://www.youtube.com/embed/5SEx265X4FA"
+                        title="YouTube video player" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+                </iframe>
+            </div>
+        </section>
 
 
- <!-- Banner Telegram -->
- <!-- Elfsight Telegram Chat | Untitled Telegram Chat -->
-<script src="https://elfsightcdn.com/platform.js" async></script>
-<div class="elfsight-app-b4cc8762-f1c5-49ab-9a30-ff61262447c1" data-elfsight-app-lazy></div>  
-  
-</main>
+        <!-- Blocco 2: Lista mod necessarie -->
+        <section class="glass rounded-2xl w-full max-w-4xl p-5">
+            <h2 class="text-lg font-semibold mb-3">LISTA DI MOD NECESSARIE per la versione 1.21.5</h2>
+            <div class="prose prose-invert max-w-none text-white/90">
+                <p><strong>VIVECRAFT</strong> – necessaria per giocare in VR → <a href="https://modrinth.com/mod/vivecraft" target="_blank" rel="noopener">https://modrinth.com/mod/vivecraft</a></p>
+                <p>--------------</p>
+                <p><strong>SIMPLE VOICE CHAT</strong> – chat vocale in-game → <a href="https://modrinth.com/plugin/simple-voice-chat" target="_blank" rel="noopener">https://modrinth.com/plugin/simple-voice-chat</a></p>
+            </div>
+        </section>
 
-  <!-- Bottom Navigation -->
-  <nav class="nav-bottom fixed bottom-0 left-0 right-0 z-30">
+        <!-- Sezione 3: Chat live del server -->
+        <section class="glass rounded-2xl w-full max-w-4xl p-5">
+            <h2 class="text-lg font-semibold mb-3">Stato del server</h2>
+
+            <div class="flex items-center gap-3 mb-4">
+                <div class="text-sm">Indirizzo server</div>
+                <div class="px-3 py-2 rounded-lg bg-black/40 border border-white/10 select-all">Minecraft.oculandiaVR.it</div>
+            </div>
+            <div id="serverStatus" class="grid grid-cols-1 gap-2">
+                <div class="flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-yellow-400" id="dot"></div><span id="onoff">In attesa...</span></div>
+                <div class="text-white/80"><span class="font-semibold">Giocatori:</span> <span id="players">--</span></div>
+                <div class="text-white/80"><span class="font-semibold">MOTD:</span> <span id="motd">--</span></div>
+                <div class="text-white/80"><span class="font-semibold">Versione:</span> <span id="version">--</span></div>
+            </div>
+        </section>
+        <section class="glass rounded-2xl w-full max-w-4xl p-5">
+
+            <section class="glass rounded-2xl w-full max-w-4xl p-5">
+                <div class="flex items-center justify-between mb-3">
+                    <h2 class="text-lg font-semibold">Chat del server</h2>
+                    <span id="chatConn" class="text-xs text-white/60">Disconnesso</span>
+                </div>
+
+                <!-- Fancy "Coming Soon" Notice  for live chat Highdrasyl was here xD-->
+                <div class="h-64 flex flex-col items-center justify-center text-center rounded-xl bg-black/30 border border-white/10 p-6">
+                    <div class="animate-pulse">
+                        <h3 class="text-2xl font-bold text-white/90 mb-2">💬 Live Chat in arrivo!</h3>
+                        <p class="text-white/60 text-sm">Stiamo lavorando per offrirti una chat live dei giocatori sul server.</p>
+                        <p class="text-white/40 italic mt-1">Resta sintonizzato…</p>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- Banner Telegram -->
+            <!-- Elfsight Telegram Chat | Untitled Telegram Chat -->
+            <script src="https://elfsightcdn.com/platform.js" async></script>
+            <div class="elfsight-app-b4cc8762-f1c5-49ab-9a30-ff61262447c1" data-elfsight-app-lazy></div>
+
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="nav-bottom fixed bottom-0 left-0 right-0 z-30">
         <div class="flex items-center justify-around py-3">
             <a href="index.html" class="nav-item flex-1 flex flex-col items-center justify-center gap-1 min-h-[56px] select-none ">
                 <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
@@ -189,226 +219,226 @@
                 </span>
             </a>
             <a href="minecraft.html" class="nav-item flex-1 flex flex-col items-center justify-center gap-1 min-h-[56px] select-none text-green-600">
-      <svg class="w-6 h-6 block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2l7 4v8l-7 4-7-4V6l7-4zm0 0v8m0 0l7-4m-7 4l-7-4"/></svg>
-      <span class="text-[11px] leading-none whitespace-nowrap">Minecraft</span>
-    </a>
+                <svg class="w-6 h-6 block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2l7 4v8l-7 4-7-4V6l7-4zm0 0v8m0 0l7-4m-7 4l-7-4" /></svg>
+                <span class="text-[11px] leading-none whitespace-nowrap">Minecraft</span>
+            </a>
         </div>
     </nav>
-<script>
-// Keep content clear of the bottom nav and set active link without changing layout size
-(function() {
-  function applyNavLayout() {
-    var nav = document.querySelector('nav.nav-bottom');
-    if (!nav) return;
-    var h = nav.offsetHeight || 56;
-    document.body.style.paddingBottom = h + 'px';
-  }
-  function setActive() {
-    var here = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
-    document.querySelectorAll('nav.nav-bottom a.nav-item').forEach(function(a) {
-      var isActive = a.getAttribute('href').toLowerCase() === here;
-      a.classList.toggle('opacity-100', isActive);
-      a.classList.toggle('opacity-60', !isActive);
-    });
-  }
-  window.addEventListener('DOMContentLoaded', function() {
-    applyNavLayout();
-    setActive();
-  });
-  window.addEventListener('resize', applyNavLayout);
-})();
-</script>
+    <script>
+        // Keep content clear of the bottom nav and set active link without changing layout size
+        (function () {
+            function applyNavLayout() {
+                var nav = document.querySelector('nav.nav-bottom');
+                if (!nav) return;
+                var h = nav.offsetHeight || 56;
+                document.body.style.paddingBottom = h + 'px';
+            }
+            function setActive() {
+                var here = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
+                document.querySelectorAll('nav.nav-bottom a.nav-item').forEach(function (a) {
+                    var isActive = a.getAttribute('href').toLowerCase() === here;
+                    a.classList.toggle('opacity-100', isActive);
+                    a.classList.toggle('opacity-60', !isActive);
+                });
+            }
+            window.addEventListener('DOMContentLoaded', function () {
+                applyNavLayout();
+                setActive();
+            });
+            window.addEventListener('resize', applyNavLayout);
+        })();
+    </script>
 
 
 
-  <script>
-    // simple auto-scroll fake chat lines; replace with real feed if desired
-    const sampleLines = [
-      "[Server] Benvenuto su OculandiaMC!",
-      "[Chat] Mayun: qualcuno per un raid?",
-      "[Chat] KillDNoise: vendo diamanti 5c l'uno",
-      "[Sistema] Evento PvP ore 16:00",
-      "[Chat] Highdrasyl: cerco compagni per Nether",
-      "[Sistema] RICORDA TUTTE LE SERE SIAMO SU VRCHAT STANZA OCULANDIA DALLE 21:30 IN POI",
-      "[Admin] BadRasta: /home per tornare alla base",
-      "[Chat] Astrazyra: chi ha legna?",
-      "[Admin] Funjamin: tp al villaggio pls",
-      "[Chat] Carlyyy001: Non mi funziona il microfono",
-      "[Sistema] Evento Luna Park ore 18:00",
-      "[Chat] Highdrasyl: Funja droppa i diamanti, veloce muhahahaha",
-      "[Sistema] RICORDA TUTTE LE SERE SIAMO SU VRCHAT STANZA OCULANDIA DALLE 21:30 IN POI",
-      "[Chat] Astrazyra: Ho finito la mia base, venite a vederla?",
-      "[Chat] Highdrasyl: Uh si che forte! Vediamo la base",
-      "[Admin] BadRasta: Ragazzi non smanacciate in giro",
-      "[Admin] Funjamin: No Hidrasyl, vai a scavarteli come tutti gli altri haahaha",
-      "[Chat] KillDNoise: Hey! Chi mi ha fatto una casa a forma di maiale??",
-      "[Sistema] RICORDA TUTTE LE SERE SIAMO SU VRCHAT STANZA OCULANDIA DALLE 21:30 IN POI",
-      "[Chat] Carlyyy001: Ho problemi di connessione",
-      "[Admin] Funjamin: Hai provato a spegnere e riaccendere?",
-      "[Chat] Mayun: Proprio una figata sto server",
-      "[Chat] Highdrasyl: Sono d'accordo!",
-      "[Chat] Astrazyra: Lo penso anch'io!",
-      "[Chat] KillDNoise: Per forza! E' OCULANDIA",
-      "[Sistema] RICORDA TUTTE LE SERE SIAMO SU VRCHAT STANZA OCULANDIA DALLE 21:30 IN POI",
-      "[Sistema] EVENTI, FESTE A TEMA, UTENTI VIP CON PRIVILEGI E MOLTO ALTRO",
-      "[Admin] Funjamin: Oculandia è a tutto tondo, la trovate su tutti i social e su tutte le piattaforme VR"
-    ];
-    const chatBg = document.getElementById('chatBg');
-    let i = 0;
-    function pushLine() {
-      chatBg.textContent += (chatBg.textContent ? "\n" : "") + sampleLines[i % sampleLines.length];
-      chatBg.scrollTop = chatBg.scrollHeight;
-      i++;
-      if (chatBg.textContent.split("\n").length > 40) {
-        chatBg.textContent = chatBg.textContent.split("\n").slice(-30).join("\n");
-      }
-    }
-    for (let k = 0; k < 12; k++) pushLine();
-    setInterval(pushLine, 2200);
-
-    // Server status via public API (set your server IP/host)
-    async function checkServer(host) {
-      const dot = document.getElementById('dot');
-      const onoff = document.getElementById('onoff');
-      const players = document.getElementById('players');
-      const motd = document.getElementById('motd');
-      const version = document.getElementById('version');
-      onoff.textContent = 'Verifica in corso...';
-      dot.style.backgroundColor = '#facc15';
-
-      try {
-        const res = await fetch(`https://api.mcsrvstat.us/3/${encodeURIComponent(host)}`);
-        const data = await res.json();
-        if (data && data.online) {
-          dot.style.backgroundColor = '#22c55e';
-          onoff.textContent = 'Online';
-          players.textContent = data.players && data.players.online != null ? `${data.players.online} / ${data.players.max || "?"}` : '--';
-          motd.textContent = (data.motd && data.motd.clean) ? data.motd.clean.join(' ') : '--';
-          version.textContent = data.version || '--';
-        } else {
-          dot.style.backgroundColor = '#ef4444';
-          onoff.textContent = 'Offline';
-          players.textContent = '--';
-          motd.textContent = '--';
-          version.textContent = '--';
+    <script>
+        // simple auto-scroll fake chat lines; replace with real feed if desired
+        const sampleLines = [
+            "[Server] Benvenuto su OculandiaMC!",
+            "[Chat] Mayun: qualcuno per un raid?",
+            "[Chat] KillDNoise: vendo diamanti 5c l'uno",
+            "[Sistema] Evento PvP ore 16:00",
+            "[Chat] Highdrasyl: cerco compagni per Nether",
+            "[Sistema] RICORDA TUTTE LE SERE SIAMO SU VRCHAT STANZA OCULANDIA DALLE 21:30 IN POI",
+            "[Admin] BadRasta: /home per tornare alla base",
+            "[Chat] Astrazyra: chi ha legna?",
+            "[Admin] Funjamin: tp al villaggio pls",
+            "[Chat] Carlyyy001: Non mi funziona il microfono",
+            "[Sistema] Evento Luna Park ore 18:00",
+            "[Chat] Highdrasyl: Funja droppa i diamanti, veloce muhahahaha",
+            "[Sistema] RICORDA TUTTE LE SERE SIAMO SU VRCHAT STANZA OCULANDIA DALLE 21:30 IN POI",
+            "[Chat] Astrazyra: Ho finito la mia base, venite a vederla?",
+            "[Chat] Highdrasyl: Uh si che forte! Vediamo la base",
+            "[Admin] BadRasta: Ragazzi non smanacciate in giro",
+            "[Admin] Funjamin: No Hidrasyl, vai a scavarteli come tutti gli altri haahaha",
+            "[Chat] KillDNoise: Hey! Chi mi ha fatto una casa a forma di maiale??",
+            "[Sistema] RICORDA TUTTE LE SERE SIAMO SU VRCHAT STANZA OCULANDIA DALLE 21:30 IN POI",
+            "[Chat] Carlyyy001: Ho problemi di connessione",
+            "[Admin] Funjamin: Hai provato a spegnere e riaccendere?",
+            "[Chat] Mayun: Proprio una figata sto server",
+            "[Chat] Highdrasyl: Sono d'accordo!",
+            "[Chat] Astrazyra: Lo penso anch'io!",
+            "[Chat] KillDNoise: Per forza! E' OCULANDIA",
+            "[Sistema] RICORDA TUTTE LE SERE SIAMO SU VRCHAT STANZA OCULANDIA DALLE 21:30 IN POI",
+            "[Sistema] EVENTI, FESTE A TEMA, UTENTI VIP CON PRIVILEGI E MOLTO ALTRO",
+            "[Admin] Funjamin: Oculandia è a tutto tondo, la trovate su tutti i social e su tutte le piattaforme VR"
+        ];
+        const chatBg = document.getElementById('chatBg');
+        let i = 0;
+        function pushLine() {
+            chatBg.textContent += (chatBg.textContent ? "\n" : "") + sampleLines[i % sampleLines.length];
+            chatBg.scrollTop = chatBg.scrollHeight;
+            i++;
+            if (chatBg.textContent.split("\n").length > 40) {
+                chatBg.textContent = chatBg.textContent.split("\n").slice(-30).join("\n");
+            }
         }
-      } catch(e) {
-        dot.style.backgroundColor = '#ef4444';
-        onoff.textContent = 'Errore di rete';
-        players.textContent = '--';
-        motd.textContent = '--';
-        version.textContent = '--';
-      }
-    }
+        for (let k = 0; k < 12; k++) pushLine();
+        setInterval(pushLine, 2200);
 
-      </script>
+        // Server status via public API (set your server IP/host)
+        async function checkServer(host) {
+            const dot = document.getElementById('dot');
+            const onoff = document.getElementById('onoff');
+            const players = document.getElementById('players');
+            const motd = document.getElementById('motd');
+            const version = document.getElementById('version');
+            onoff.textContent = 'Verifica in corso...';
+            dot.style.backgroundColor = '#facc15';
 
-  <script>
-    // === CONFIG ===
-    const SERVER_HOST = 'eu8008903.g-portal.game';
-    // Imposta qui il WebSocket della chat (relay lato server richiesto). Esempio: wss://tuo-dominio.example/ws
-    const CHAT_WS_URL = (window.location.protocol === 'https:' ? 'wss://' : 'ws://') + window.location.host + '/ws'; // fallback locale
-
-    // === Server status ===
-    async function checkServer(host) {
-      const dot = document.getElementById('dot');
-      const onoff = document.getElementById('onoff');
-      const players = document.getElementById('players');
-      const motd = document.getElementById('motd');
-      const version = document.getElementById('version');
-      onoff.textContent = 'Verifica in corso...';
-      dot.style.backgroundColor = '#facc15';
-
-      try {
-        const res = await fetch(`https://api.mcsrvstat.us/3/${encodeURIComponent(host)}`);
-        const data = await res.json();
-        if (data && data.online) {
-          dot.style.backgroundColor = '#22c55e';
-          onoff.textContent = 'Online';
-          players.textContent = data.players && data.players.online != null ? `${data.players.online} / ${data.players.max || "?"}` : '--';
-          motd.textContent = (data.motd && data.motd.clean) ? data.motd.clean.join(' ') : '--';
-          version.textContent = data.version || '--';
-        } else {
-          dot.style.backgroundColor = '#ef4444';
-          onoff.textContent = 'Offline';
-          players.textContent = '--';
-          motd.textContent = '--';
-          version.textContent = '--';
+            try {
+                const res = await fetch(`https://api.mcsrvstat.us/3/${encodeURIComponent(host)}`);
+                const data = await res.json();
+                if (data && data.online) {
+                    dot.style.backgroundColor = '#22c55e';
+                    onoff.textContent = 'Online';
+                    players.textContent = data.players && data.players.online != null ? `${data.players.online} / ${data.players.max || "?"}` : '--';
+                    motd.textContent = (data.motd && data.motd.clean) ? data.motd.clean.join(' ') : '--';
+                    version.textContent = data.version || '--';
+                } else {
+                    dot.style.backgroundColor = '#ef4444';
+                    onoff.textContent = 'Offline';
+                    players.textContent = '--';
+                    motd.textContent = '--';
+                    version.textContent = '--';
+                }
+            } catch (e) {
+                dot.style.backgroundColor = '#ef4444';
+                onoff.textContent = 'Errore di rete';
+                players.textContent = '--';
+                motd.textContent = '--';
+                version.textContent = '--';
+            }
         }
-      } catch(e) {
-        dot.style.backgroundColor = '#ef4444';
-        onoff.textContent = 'Errore di rete';
-        players.textContent = '--';
-        motd.textContent = '--';
-        version.textContent = '--';
-      }
-    }
-    checkServer(SERVER_HOST);
-    setInterval(() => checkServer(SERVER_HOST), 60000);
 
-    // === Live Chat WebSocket client ===
-    const chatBox = document.getElementById('chatBox');
-    const chatConn = document.getElementById('chatConn');
+    </script>
 
-    function appendChat(line) {
-      const div = document.createElement('div');
-      div.textContent = line;
-      chatBox.appendChild(div);
-      chatBox.scrollTop = chatBox.scrollHeight;
-      // limit lines
-      while (chatBox.children.length > 400) chatBox.removeChild(chatBox.firstChild);
-    }
-    
+    <script>
+        // === CONFIG ===
+        const SERVER_HOST = 'eu8008903.g-portal.game';
+        // Imposta qui il WebSocket della chat (relay lato server richiesto). Esempio: wss://tuo-dominio.example/ws
+        const CHAT_WS_URL = (window.location.protocol === 'https:' ? 'wss://' : 'ws://') + window.location.host + '/ws'; // fallback locale
 
-    function connectChat() {
-      try {
-        const ws = new WebSocket(CHAT_WS_URL);
-        ws.onopen = () => { chatConn.textContent = 'Connesso'; };
-        ws.onclose = () => { chatConn.textContent = 'Disconnesso, ritento…'; setTimeout(connectChat, 3000); };
-        ws.onerror = () => { chatConn.textContent = 'Errore WebSocket'; };
-        ws.onmessage = (ev) => {
-          try {
-            const msg = JSON.parse(ev.data);
-            if (msg.type === 'chat' && msg.text) appendChat(msg.text);
-            // Supporta anche array di messaggi
-            if (Array.isArray(msg)) msg.forEach(m => m.text && appendChat(m.text));
-          } catch {
-            // se plain text
-            appendChat(String(ev.data));
-          }
-        };
-      } catch (e) {
-        chatConn.textContent = 'WebSocket non disponibile';
-      }
-    }
-    connectChat();
+        // === Server status ===
+        async function checkServer(host) {
+            const dot = document.getElementById('dot');
+            const onoff = document.getElementById('onoff');
+            const players = document.getElementById('players');
+            const motd = document.getElementById('motd');
+            const version = document.getElementById('version');
+            onoff.textContent = 'Verifica in corso...';
+            dot.style.backgroundColor = '#facc15';
 
-    // === Mods loader ===
-    async function loadMods() {
-      try {
-        const res = await fetch('minecraft-mods.json', { cache: 'no-store' });
-        if (!res.ok) return;
-        const mods = await res.json();
-        const grid = document.getElementById('modsGrid');
-        grid.innerHTML = '';
-        mods.forEach(m => {
-          const card = document.createElement('article');
-          card.className = 'rounded-xl overflow-hidden border border-white/10 bg-black/30';
-          card.innerHTML = `
-            <div class="aspect-video bg-black/30 overflow-hidden">
-              ${m.image ? `<img src="${m.image}" alt="" class="w-full h-full object-cover">` : ''}
-            </div>
-            <div class="p-3">
-              <h3 class="font-semibold">${m.title || 'Mod'}</h3>
-              <p class="text-sm text-white/80 mt-1">${m.description || ''}</p>
-              ${m.link ? `<a class="inline-block mt-2 text-xs px-2 py-1 rounded bg-white/10 hover:bg-white/20" href="${m.link}" target="_blank" rel="noopener">Dettagli</a>` : ''}
-            </div>`;
-          grid.appendChild(card);
-        });
-      } catch {}
-    }
-    loadMods();
-  </script>
+            try {
+                const res = await fetch(`https://api.mcsrvstat.us/3/${encodeURIComponent(host)}`);
+                const data = await res.json();
+                if (data && data.online) {
+                    dot.style.backgroundColor = '#22c55e';
+                    onoff.textContent = 'Online';
+                    players.textContent = data.players && data.players.online != null ? `${data.players.online} / ${data.players.max || "?"}` : '--';
+                    motd.textContent = (data.motd && data.motd.clean) ? data.motd.clean.join(' ') : '--';
+                    version.textContent = data.version || '--';
+                } else {
+                    dot.style.backgroundColor = '#ef4444';
+                    onoff.textContent = 'Offline';
+                    players.textContent = '--';
+                    motd.textContent = '--';
+                    version.textContent = '--';
+                }
+            } catch (e) {
+                dot.style.backgroundColor = '#ef4444';
+                onoff.textContent = 'Errore di rete';
+                players.textContent = '--';
+                motd.textContent = '--';
+                version.textContent = '--';
+            }
+        }
+        checkServer(SERVER_HOST);
+        setInterval(() => checkServer(SERVER_HOST), 60000);
+
+        // === Live Chat WebSocket client ===
+        const chatBox = document.getElementById('chatBox');
+        const chatConn = document.getElementById('chatConn');
+
+        function appendChat(line) {
+            const div = document.createElement('div');
+            div.textContent = line;
+            chatBox.appendChild(div);
+            chatBox.scrollTop = chatBox.scrollHeight;
+            // limit lines
+            while (chatBox.children.length > 400) chatBox.removeChild(chatBox.firstChild);
+        }
+
+
+        function connectChat() {
+            try {
+                const ws = new WebSocket(CHAT_WS_URL);
+                ws.onopen = () => { chatConn.textContent = 'Connesso'; };
+                ws.onclose = () => { chatConn.textContent = 'Disconnesso, ritento…'; setTimeout(connectChat, 3000); };
+                ws.onerror = () => { chatConn.textContent = 'Errore WebSocket'; };
+                ws.onmessage = (ev) => {
+                    try {
+                        const msg = JSON.parse(ev.data);
+                        if (msg.type === 'chat' && msg.text) appendChat(msg.text);
+                        // Supporta anche array di messaggi
+                        if (Array.isArray(msg)) msg.forEach(m => m.text && appendChat(m.text));
+                    } catch {
+                        // se plain text
+                        appendChat(String(ev.data));
+                    }
+                };
+            } catch (e) {
+                chatConn.textContent = 'WebSocket non disponibile';
+            }
+        }
+        connectChat();
+
+        // === Mods loader ===
+        async function loadMods() {
+            try {
+                const res = await fetch('minecraft-mods.json', { cache: 'no-store' });
+                if (!res.ok) return;
+                const mods = await res.json();
+                const grid = document.getElementById('modsGrid');
+                grid.innerHTML = '';
+                mods.forEach(m => {
+                    const card = document.createElement('article');
+                    card.className = 'rounded-xl overflow-hidden border border-white/10 bg-black/30';
+                    card.innerHTML = `
+                <div class="aspect-video bg-black/30 overflow-hidden">
+                  ${m.image ? `<img src="${m.image}" alt="" class="w-full h-full object-cover">` : ''}
+                </div>
+                <div class="p-3">
+                  <h3 class="font-semibold">${m.title || 'Mod'}</h3>
+                  <p class="text-sm text-white/80 mt-1">${m.description || ''}</p>
+                  ${m.link ? `<a class="inline-block mt-2 text-xs px-2 py-1 rounded bg-white/10 hover:bg-white/20" href="${m.link}" target="_blank" rel="noopener">Dettagli</a>` : ''}
+                </div>`;
+                    grid.appendChild(card);
+                });
+            } catch { }
+        }
+        loadMods();
+    </script>
 
 </body>
 </html>
