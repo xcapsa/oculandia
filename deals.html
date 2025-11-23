@@ -7,23 +7,17 @@
     <link rel="icon" href="icons/icon-512.png" type="image/png">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-    <!-- Progressive Web App manifest & icons -->
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#0D1B2A">
-    <link rel="icon" href="/icons/icon-192.png" sizes="192x192">
-    <link rel="apple-touch-icon" href="/icons/icon-192.png" sizes="192x192">
-    <link rel="apple-touch-icon" href="/icons/icon-512.png" sizes="512x512">
+    
     <style>
         :root {
             --dark-blue: #0D1B2A;
             --medium-blue: #1B263B;
             --accent-green: #00A859;
-            --accent-red: #CE2B37;
             --pure-white: #FFFFFF;
-            --light-gray: #D9D9D9;
         }
 
         body {
@@ -31,15 +25,10 @@
             color: var(--pure-white);
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
+            padding-bottom: 80px; /* Spazio per la nav */
         }
 
-        .orbitron {
-            font-family: 'Orbitron', monospace;
-        }
-
-        .jetbrains {
-            font-family: 'JetBrains Mono', monospace;
-        }
+        .orbitron { font-family: 'Orbitron', monospace; }
 
         .hero-gradient {
             background: linear-gradient(135deg, var(--dark-blue) 0%, var(--medium-blue) 100%);
@@ -51,28 +40,18 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .btn-primary {
-            background: var(--accent-green);
+        .btn-amazon {
+            background: #FF9900; /* Amazon Orange */
+            color: black;
+            font-weight: 600;
             transition: all 0.3s ease;
         }
 
-            .btn-primary:hover {
-                background: #00a859cc;
-                transform: translateY(-2px);
-                box-shadow: 0 8px 25px rgba(0, 168, 89, 0.3);
-            }
-
-        .btn-secondary {
-            border: 2px solid var(--accent-green);
-            color: var(--pure-white);
-            background: var(--accent-green);
-            transition: all 0.3s ease;
+        .btn-amazon:hover {
+            background: #ffac31;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 153, 0, 0.3);
         }
-
-            .btn-secondary:hover {
-                background: #00a859cc;
-                transform: translateY(-2px);
-            }
 
         .nav-bottom {
             background: rgba(27, 38, 59, 0.95);
@@ -83,525 +62,197 @@
         .nav-item {
             transition: all 0.3s ease;
         }
-
-            .nav-item.active {
-                color: var(--accent-green);
-            }
-
-            .nav-item:hover {
-                color: var(--accent-green);
-                transform: translateY(-2px);
-            }
+        .nav-item.active { color: var(--accent-green); }
 
         .deal-card {
             transition: all 0.3s ease;
-            cursor: pointer;
+        }
+        .deal-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+            border-color: var(--accent-green);
         }
 
-            .deal-card:hover {
-                transform: translateY(-4px);
-                box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
-            }
-
-        .discount-badge {
-            background: linear-gradient(135deg, var(--accent-red), #FF6B6B);
-            animation: pulse 2s infinite;
+        .product-image {
+            mix-blend-mode: multiply; /* Aiuta a fondere lo sfondo bianco delle immagini Amazon */
+            border-radius: 8px;
+            background: white;
+            padding: 4px;
         }
-
-        .price-tracker {
-            background: rgba(0, 168, 89, 0.1);
-            border: 1px solid var(--accent-green);
-        }
-
-        .rating-stars {
-            color: #FFD700;
-        }
-
-        .vendor-logo {
-            width: 24px;
-            height: 24px;
-            border-radius: 4px;
-            background: var(--medium-blue);
-        }
-
-        .particle-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            opacity: 0.3;
-        }
-
-        .floating-action {
-            background: var(--accent-green);
-            box-shadow: 0 8px 25px rgba(0, 168, 89, 0.4);
-            transition: all 0.3s ease;
-        }
-
-            .floating-action:hover {
-                transform: scale(1.1);
-                box-shadow: 0 12px 35px rgba(0, 168, 89, 0.6);
-            }
-
-        @keyframes pulse {
-            0%, 100% {
-                transform: scale(1);
-            }
-
-            50% {
-                transform: scale(1.05);
-            }
-        }
-
-        .pulse-animation {
-            animation: pulse 2s infinite;
-        }
-
+        
         .flash-sale {
-            background: linear-gradient(45deg, #FF6B6B, #4ECDC4, #45B7D1, #96CEB4);
-            background-size: 400% 400%;
-            animation: gradient 3s ease infinite;
+            background: linear-gradient(45deg, #FF6B6B, #4ECDC4, #45B7D1);
+            background-size: 200% 200%;
+            animation: gradient 5s ease infinite;
         }
-
-        @keyframes gradient {
-            0% {
-                background-position: 0% 50%;
-            }
-
-            50% {
-                background-position: 100% 50%;
-            }
-
-            100% {
-                background-position: 0% 50%;
-            }
-        }
+        @keyframes gradient { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
     </style>
 </head>
 <body>
-    <!-- Particle Background -->
-    <div id="particle-bg" class="particle-bg"></div>
 
-    <!-- Header -->
-    <header class="hero-gradient p-4">
-        <div class="flex items-center justify-between mb-6">
+    <header class="hero-gradient p-4 sticky top-0 z-20 shadow-lg">
+        <div class="flex items-center justify-between">
             <div class="flex items-center space-x-3">
-                <img src="icons/icon-192.png" alt="Logo Oculandia VR" class="w-10 h-10 rounded-full">
+                <img src="icons/icon-192.png" alt="Logo" class="w-10 h-10 rounded-full border-2 border-green-500">
                 <div>
                     <h1 class="text-xl font-bold orbitron">Sconti VR</h1>
-                    <p class="text-sm text-gray-300">Offerte e promozioni gaming</p>
+                    <p class="text-xs text-gray-300">Offerte Amazon Selezionate</p>
                 </div>
             </div>
-            <button class="p-2 rounded-full bg-white/10 backdrop-blur-sm">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5-5-5h5v-12"></path>
-                </svg>
-            </button>
         </div>
     </header>
 
-    <!-- Flash Sale Banner -->
-    <section class="px-4 py-6">
-        <div class="flash-sale rounded-xl p-4 mb-6 text-center">
-            <div class="flex items-center justify-center space-x-2 mb-2">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                </svg>
-                <h3 class="text-lg font-bold orbitron">USA I NOSTRI LINK</h3>
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                </svg>
-            </div>
-            <p class="text-sm">Guadagna Risparmiando!</p>
-        </div>
-
-        <!-- Deals Grid -->
-        <div class="space-y-4 mb-20">
-            <!-- Deal Card 1 -->
-            <div class="deal-card card-glass rounded-xl p-4">
-                <div class="flex items-start space-x-4">
-                    <div class="relative">
-                        <img src="images/prodotto1.jpg"
-                             class="w-20 h-20 object-cover rounded-lg">
-                        <div class="discount-badge absolute -top-2 -right-2 w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold text-white">
-                            -21%
-                        </div>
-                    </div>
-                    <div class="flex-1">
-                        <h4 class="font-semibold text-lg mb-1">Meta Quest 3 - 512GB</h4>
-                        <p class="text-sm text-gray-300 mb-2">Ultimo modello di Meta con storage massimo</p>
-
-                        <div class="flex items-center space-x-2 mb-2">
-                            <div class="vendor-logo bg-orange-600 flex items-center justify-center">
-                                <span class="text-xs font-bold text-white">A</span>
-                            </div>
-                            <span class="text-sm text-gray-400">Amazon</span>
-                            <div class="flex items-center space-x-1">
-                                <div class="rating-stars">★★★★★</div>
-                                <span class="text-xs text-gray-400">(1,247)</span>
-                            </div>
-                        </div>
-
-                        <div class="flex items-center space-x-3 mb-3">
-                            <span class="text-lg font-bold text-green-400">€549</span>
-                            <span class="text-sm text-gray-500 line-through">€699</span>
-                            <span class="text-xs bg-red-500/20 text-red-400 px-2 py-1 rounded-full">Risparmia €150</span>
-                        </div>
-
-                        <button class="btn-secondary w-full py-2 px-4 rounded-lg text-sm" onclick="buyNow('quest3-512')">
-                            Acquista
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Deal Card 2 -->
-            <div class="deal-card card-glass rounded-xl p-4">
-                <div class="flex items-start space-x-4">
-                    <div class="relative">
-                        <img src="images/prodotto2.jpg"
-                             class="w-20 h-20 object-cover rounded-lg">
-                        <div class="discount-badge absolute -top-2 -right-2 w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold text-white">
-                            -50%
-                        </div>
-                    </div>
-                    <div class="flex-1">
-                        <h4 class="font-semibold text-lg mb-1">Beat Saber + DLC Pack</h4>
-                        <p class="text-sm text-gray-300 mb-2">Il gioco VR più popolare con tutti i DLC</p>
-
-                        <div class="flex items-center space-x-2 mb-2">
-                            <div class="vendor-logo bg-blue-600 flex items-center justify-center">
-                                <span class="text-xs font-bold text-white">S</span>
-                            </div>
-                            <span class="text-sm text-gray-400">Steam VR</span>
-                            <div class="flex items-center space-x-1">
-                                <div class="rating-stars">★★★★★</div>
-                                <span class="text-xs text-gray-400">(15,892)</span>
-                            </div>
-                        </div>
-
-                        <div class="flex items-center space-x-3 mb-3">
-                            <span class="text-lg font-bold text-green-400">€19.99</span>
-                            <span class="text-sm text-gray-500 line-through">€39.99</span>
-                            <span class="text-xs bg-red-500/20 text-red-400 px-2 py-1 rounded-full">Risparmia €20</span>
-                        </div>
-
-                        <button class="btn-secondary w-full py-2 px-4 rounded-lg text-sm" onclick="buyNow('beatsaber-dlc')">
-                            Acquista
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Deal Card 3 -->
-            <div class="deal-card card-glass rounded-xl p-4">
-                <div class="flex items-start space-x-4">
-                    <div class="relative">
-                        <img src="images/prodotto3.jpg"
-                             class="w-20 h-20 object-cover rounded-lg">
-                        <div class="discount-badge absolute -top-2 -right-2 w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold text-white">
-                            -34%
-                        </div>
-                    </div>
-                    <div class="flex-1">
-                        <h4 class="font-semibold text-lg mb-1">PSVR2 Sense Controller</h4>
-                        <p class="text-sm text-gray-300 mb-2">Controller ufficiali per PSVR2</p>
-
-                        <div class="flex items-center space-x-2 mb-2">
-                            <div class="vendor-logo bg-red-600 flex items-center justify-center">
-                                <span class="text-xs font-bold text-white">M</span>
-                            </div>
-                            <span class="text-sm text-gray-400">MediaWorld</span>
-                            <div class="flex items-center space-x-1">
-                                <div class="rating-stars">★★★★☆</div>
-                                <span class="text-xs text-gray-400">(456)</span>
-                            </div>
-                        </div>
-
-                        <div class="flex items-center space-x-3 mb-3">
-                            <span class="text-lg font-bold text-green-400">€99</span>
-                            <span class="text-sm text-gray-500 line-through">€149</span>
-                            <span class="text-xs bg-red-500/20 text-red-400 px-2 py-1 rounded-full">Risparmia €50</span>
-                        </div>
-
-                        <button class="btn-secondary w-full py-2 px-4 rounded-lg text-sm" onclick="buyNow('psvr2-controllers')">
-                            Acquista
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Deal Card 4 -->
-            <div class="deal-card card-glass rounded-xl p-4">
-                <div class="flex items-start space-x-4">
-                    <div class="relative">
-                        <img src="images/prodotto4.jpg"
-                             class="w-20 h-20 object-cover rounded-lg">
-                        <div class="discount-badge absolute -top-2 -right-2 w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold text-white">
-                            -40%
-                        </div>
-                    </div>
-                    <div class="flex-1">
-                        <h4 class="font-semibold text-lg mb-1">VR Gaming Chair</h4>
-                        <p class="text-sm text-gray-300 mb-2">Sedia ergonomica per gaming VR</p>
-
-                        <div class="flex items-center space-x-2 mb-2">
-                            <div class="vendor-logo bg-green-600 flex items-center justify-center">
-                                <span class="text-xs font-bold text-white">G</span>
-                            </div>
-                            <span class="text-sm text-gray-400">GameStop</span>
-                            <div class="flex items-center space-x-1">
-                                <div class="rating-stars">★★★★★</div>
-                                <span class="text-xs text-gray-400">(892)</span>
-                            </div>
-                        </div>
-
-                        <div class="flex items-center space-x-3 mb-3">
-                            <span class="text-lg font-bold text-green-400">€299</span>
-                            <span class="text-sm text-gray-500 line-through">€499</span>
-                            <span class="text-xs bg-red-500/20 text-red-400 px-2 py-1 rounded-full">Risparmia €200</span>
-                        </div>
-
-                        <button class="btn-secondary w-full py-2 px-4 rounded-lg text-sm" onclick="buyNow('vr-chair')">
-                            Acquista
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Deal Card 5 -->
-            <div class="deal-card card-glass rounded-xl p-4">
-                <div class="flex items-start space-x-4">
-                    <div class="relative">
-                        <img src="images/prodotto5.jpg"
-                             class="w-20 h-20 object-cover rounded-lg">
-                        <div class="discount-badge absolute -top-2 -right-2 w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold text-white">
-                            -25%
-                        </div>
-                    </div>
-                    <div class="flex-1">
-                        <h4 class="font-semibold text-lg mb-1">Half-Life: Alyx</h4>
-                        <p class="text-sm text-gray-300 mb-2">Capolavoro VR di Valve</p>
-
-                        <div class="flex items-center space-x-2 mb-2">
-                            <div class="vendor-logo bg-blue-600 flex items-center justify-center">
-                                <span class="text-xs font-bold text-white">S</span>
-                            </div>
-                            <span class="text-sm text-gray-400">Steam VR</span>
-                            <div class="flex items-center space-x-1">
-                                <div class="rating-stars">★★★★★</div>
-                                <span class="text-xs text-gray-400">(25,467)</span>
-                            </div>
-                        </div>
-
-                        <div class="flex items-center space-x-3 mb-3">
-                            <span class="text-lg font-bold text-green-400">€37.49</span>
-                            <span class="text-sm text-gray-500 line-through">€49.99</span>
-                            <span class="text-xs bg-red-500/20 text-red-400 px-2 py-1 rounded-full">Risparmia €12.50</span>
-                        </div>
-
-                        <button class="btn-secondary w-full py-2 px-4 rounded-lg text-sm" onclick="buyNow('halflife-alyx')">
-                            Acquista
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Deal Card 6 -->
-            <div class="deal-card card-glass rounded-xl p-4">
-                <div class="flex items-start space-x-4">
-                    <div class="relative">
-                        <img src="images/prodotto6.jpg"
-                             class="w-20 h-20 object-cover rounded-lg">
-                        <div class="discount-badge absolute -top-2 -right-2 w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold text-white">
-                            -60%
-                        </div>
-                    </div>
-                    <div class="flex-1">
-                        <h4 class="font-semibold text-lg mb-1">VR Chat Premium</h4>
-                        <p class="text-sm text-gray-300 mb-2">Abbonamento premium per VR Chat</p>
-
-                        <div class="flex items-center space-x-2 mb-2">
-                            <div class="vendor-logo bg-purple-600 flex items-center justify-center">
-                                <span class="text-xs font-bold text-white">V</span>
-                            </div>
-                            <span class="text-sm text-gray-400">VR Chat</span>
-                            <div class="flex items-center space-x-1">
-                                <div class="rating-stars">★★★★☆</div>
-                                <span class="text-xs text-gray-400">(3,421)</span>
-                            </div>
-                        </div>
-
-                        <div class="flex items-center space-x-3 mb-3">
-                            <span class="text-lg font-bold text-green-400">€7.99</span>
-                            <span class="text-sm text-gray-500 line-through">€19.99</span>
-                            <span class="text-xs bg-red-500/20 text-red-400 px-2 py-1 rounded-full">Risparmia €12</span>
-                        </div>
-
-                        <button class="btn-secondary w-full py-2 px-4 rounded-lg text-sm" onclick="buyNow('vrchat-premium')">
-                            Acquista
-                        </button>
-                    </div>
-                </div>
-            </div>
+    <section class="px-4 py-4">
+        <div class="flash-sale rounded-xl p-4 text-center shadow-lg">
+            <h3 class="text-lg font-bold orbitron text-white drop-shadow-md">SUPPORTO COMMUNITY</h3>
+            <p class="text-sm text-white font-medium mt-1">Acquistando da questi link supporti Oculandia senza costi aggiuntivi!</p>
         </div>
     </section>
 
-    <!-- Bottom Navigation -->
+    <section class="px-4">
+        <div id="deals-container" class="space-y-4">
+            <div class="text-center py-10 text-gray-400">Caricamento offerte in corso...</div>
+        </div>
+    </section>
+
     <nav class="nav-bottom fixed bottom-0 left-0 right-0 z-30">
         <div class="flex items-center justify-around py-3">
-            <a href="index.html" class="nav-item flex-1 flex flex-col items-center justify-center gap-1 min-h-[56px] select-none ">
-                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
-                </svg>
+            <a href="index.html" class="nav-item flex-1 flex flex-col items-center gap-1 min-h-[56px] select-none">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" /></svg>
                 <span class="text-xs">Home</span>
             </a>
-            <a href="events.html" class="nav-item flex-1 flex flex-col items-center justify-center gap-1 min-h-[56px] select-none ">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                </svg>
+            <a href="events.html" class="nav-item flex-1 flex flex-col items-center gap-1 min-h-[56px] select-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                 <span class="text-xs">Eventi</span>
             </a>
-            <a href="deals.html" class="nav-item flex-1 flex flex-col items-center justify-center gap-1 min-h-[56px] select-none text-green-600 ">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
-                </svg>
+            <a href="deals.html" class="nav-item flex-1 flex flex-col items-center gap-1 min-h-[56px] select-none text-green-600">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path></svg>
                 <span class="text-xs">Sconti</span>
             </a>
-            <a href="shop.html" class="nav-item flex-1 flex flex-col items-center justify-center gap-1 min-h-[56px] select-none ">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                </svg>
+            <a href="shop.html" class="nav-item flex-1 flex flex-col items-center gap-1 min-h-[56px] select-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>
                 <span class="text-xs">Shop</span>
             </a>
-            <a href="social.html" class="nav-item flex-1 flex flex-col items-center justify-center gap-1 min-h-[56px] select-none ">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"></path>
-                </svg>
-                <span class="text-xs">
-                    Social
-                </span>
+            <a href="social.html" class="nav-item flex-1 flex flex-col items-center gap-1 min-h-[56px] select-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"></path></svg>
+                <span class="text-xs">Social</span>
             </a>
-            <a href="minecraft.html" class="nav-item flex-1 flex flex-col items-center justify-center gap-1 min-h-[56px] select-none ">
-      <svg class="w-6 h-6 block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2l7 4v8l-7 4-7-4V6l7-4zm0 0v8m0 0l7-4m-7 4l-7-4"/></svg>
-      <span class="text-[11px] leading-none whitespace-nowrap">Minecraft</span>
-    </a>
+            <a href="minecraft.html" class="nav-item flex-1 flex flex-col items-center gap-1 min-h-[56px] select-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2l7 4v8l-7 4-7-4V6l7-4zm0 0v8m0 0l7-4m-7 4l-7-4"/></svg>
+                <span class="text-xs">Minecraft</span>
+            </a>
         </div>
     </nav>
 
     <script>
-        // Definisci i link per ogni prodotto
-        const productLinks = {
-            'quest3-512': 'https://www.amazon.it/tuo-link-quest3',
-            'beatsaber-dlc': 'https://store.steampowered.com/tuo-link-beatsaber',
-            'psvr2-controllers': 'https://www.mediaworld.it/tuo-link-psvr2',
-            'vr-chair': 'https://www.gamestop.it/tuo-link-chair',
-            'halflife-alyx': 'https://store.steampowered.com/tuo-link-halflife',
-            'vrchat-premium': 'https://hello.vrchat.com/tuo-link-vrchat'
-        };
+        /* CONFIGURAZIONE PRODOTTI 
+           Aggiungi qui sotto gli ASIN dei prodotti Amazon che vuoi mostrare.
+           L'immagine si aggiorna automaticamente dall'ASIN.
+        */
+        const AFFILIATE_TAG = "Oculanida-21";
+        
+        const amazonDeals = [
+            {
+                asin: "B0C7W12RN2",
+                title: "Meta Quest 3 - 128GB",
+                desc: "Realtà Mista rivoluzionaria, prestazioni potenti.",
+                category: "Hardware"
+            },
+            {
+                asin: "B0C7W12RN2", // Spesso condividono la pagina, controlla se esiste ASIN specifico per il 512GB o usa lo stesso link
+                title: "Meta Quest 3 - 512GB",
+                desc: "La versione definitiva con massimo spazio di archiviazione.",
+                category: "Hardware"
+            },
+            {
+                asin: "B0CMW46W65",
+                title: "KIWI design Cinturino Comfort (Quest 3)",
+                desc: "Migliora il comfort e bilancia il peso del visore.",
+                category: "Accessori"
+            },
+            {
+                asin: "B0CJLG9SBR",
+                title: "BOBOVR M3 Pro - Batteria Strap",
+                desc: "Cinturino con batteria magnetica hot-swap.",
+                category: "Accessori"
+            },
+            {
+                asin: "B098399X91",
+                title: "Syntech Cavo Link 5m",
+                desc: "Per giocare ai titoli PC VR con massima qualità.",
+                category: "Cavi"
+            },
+            {
+                asin: "B0BSVPSJ3X",
+                title: "PlayStation VR2",
+                desc: "Il visore di nuova generazione per PS5.",
+                category: "Hardware"
+            }
+        ];
 
-        // Deal management functions
-        function buyNow(dealId) {
-            const url = productLinks[dealId];
-
-            showModal('Conferma Acquisto', `
-                            <div class="text-center space-y-4">
-                                <div class="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto">
-                                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                    </svg>
-                                </div>
-                                <p>Stai per essere reindirizzato al sito del venditore per completare l'acquisto.</p>
-                                <p class="text-sm text-gray-400">Assicurati di verificare il prezzo finale prima di confermare.</p>
-                            </div>
-                        `, [
-                { text: 'Procedi', class: 'btn-primary', onclick: `window.open('${url}', '_blank')` }
-            ]);
+        // Funzione per generare l'URL immagine automatico di Amazon
+        function getAmazonImage(asin) {
+            // Utilizzo del servizio widget pubblico di Amazon per le immagini
+            return `https://ws-eu.amazon-adsystem.com/widgets/q?_encoding=UTF8&ASIN=${asin}&Format=_SL250_&ID=AsinImage&MarketPlace=IT&ServiceVersion=20070822&WS=1`;
         }
 
-        function addDealAlert() {
-            showModal('Aggiungi Alert Offerta', `
-                            <div class="space-y-4">
-                                <input type="text" placeholder="Cosa stai cercando?" class="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-600 focus:border-green-400 outline-none">
-                                <select class="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-600 focus:border-green-400 outline-none">
-                                    <option>Categoria...</option>
-                                    <option>Giochi</option>
-                                    <option>Hardware</option>
-                                    <option>Accessori</option>
-                                    <option>Servizi</option>
-                                </select>
-                                <input type="number" placeholder="Prezzo massimo (opzionale)" class="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-600 focus:border-green-400 outline-none">
-                                <select class="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-600 focus:border-green-400 outline-none">
-                                    <option>Sconto minimo...</option>
-                                    <option>25%</option>
-                                    <option>50%</option>
-                                    <option>75%</option>
-                                </select>
+        // Funzione per renderizzare la griglia
+        function renderDeals() {
+            const container = document.getElementById('deals-container');
+            container.innerHTML = '';
+
+            amazonDeals.forEach((deal, index) => {
+                // Link affiliato
+                const affiliateLink = `https://www.amazon.it/dp/${deal.asin}?tag=${AFFILIATE_TAG}`;
+                
+                const card = document.createElement('div');
+                card.className = 'deal-card card-glass rounded-xl p-4 flex items-center space-x-4 opacity-0'; // opacity-0 per animazione
+                
+                card.innerHTML = `
+                    <div class="relative w-24 h-24 flex-shrink-0 bg-white rounded-lg p-1 flex items-center justify-center overflow-hidden">
+                        <img src="${getAmazonImage(deal.asin)}" 
+                             alt="${deal.title}" 
+                             class="max-w-full max-h-full object-contain mix-blend-multiply"
+                             onerror="this.src='icons/icon-192.png'">
+                    </div>
+                    
+                    <div class="flex-1 min-w-0">
+                        <div class="flex justify-between items-start">
+                            <span class="text-xs text-gray-400 bg-gray-800 px-2 py-0.5 rounded mb-1">${deal.category}</span>
+                            <div class="text-yellow-400 text-xs">★★★★☆</div>
+                        </div>
+                        <h4 class="font-bold text-sm text-white truncate mb-1">${deal.title}</h4>
+                        <p class="text-xs text-gray-400 mb-3 line-clamp-2">${deal.desc}</p>
+                        
+                        <div class="flex justify-between items-center">
+                            <div class="flex flex-col">
+                                <span class="text-xs text-gray-500">Prezzo Amazon</span>
+                                <span class="text-sm font-bold text-green-400">Verifica offerta</span>
                             </div>
-                        `, [
-                { text: 'Crea Alert', class: 'btn-primary' }
-            ]);
-        }
+                            <a href="${affiliateLink}" target="_blank" rel="noopener noreferrer" class="btn-amazon px-4 py-2 rounded-lg text-xs shadow-lg flex items-center gap-1">
+                                Acquista
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                            </a>
+                        </div>
+                    </div>
+                `;
+                
+                container.appendChild(card);
 
-        function showToast(message) {
-            const toast = document.createElement('div');
-            toast.className = 'fixed top-4 right-4 z-50 px-6 py-3 rounded-lg text-white bg-green-600';
-            toast.textContent = message;
-            document.body.appendChild(toast);
-
-            anime({
-                targets: toast,
-                translateX: [300, 0],
-                opacity: [0, 1],
-                duration: 300,
-                easing: 'easeOutCubic'
-            });
-
-            setTimeout(() => {
+                // Animazione ingresso
                 anime({
-                    targets: toast,
-                    translateX: [0, 300],
-                    opacity: [1, 0],
-                    duration: 300,
-                    easing: 'easeInCubic',
-                    complete: () => toast.remove()
+                    targets: card,
+                    translateY: [20, 0],
+                    opacity: [0, 1],
+                    duration: 600,
+                    delay: index * 100,
+                    easing: 'easeOutCubic'
                 });
-            }, 3000);
-        }
-
-        function showModal(title, content, actions) {
-            const modal = document.createElement('div');
-            modal.className = 'fixed inset-0 bg-black/50 flex items-center justify-center z-50';
-            const modalContent = document.createElement('div');
-            modalContent.className = 'card-glass rounded-xl p-6 m-4 max-w-sm w-full';
-
-            modalContent.innerHTML = `
-                            <h3 class="text-xl font-bold mb-4 orbitron">${title}</h3>
-                            <div class="mb-6">${content}</div>
-                            <div class="flex space-x-3">
-                                ${actions.map(action => `<button class="${action.class} flex-1 py-2 px-4 rounded-lg" ${action.onclick ? `onclick="${action.onclick};this.closest('.fixed').remove()"` : ''}>${action.text}</button>`).join('')}
-                                <button class="btn-secondary flex-1 py-2 px-4 rounded-lg" onclick="this.closest('.fixed').remove()">Annulla</button>
-                            </div>
-                        `;
-
-            modal.appendChild(modalContent);
-            document.body.appendChild(modal);
-
-            anime({
-                targets: modalContent,
-                translateY: [30, 0],
-                opacity: [0, 1],
-                duration: 300,
-                easing: 'easeOutCubic'
             });
         }
 
-        // Initialize page
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log('🛍️ Oculandia VR Deals - Page loaded successfully!');
-        });
+        document.addEventListener('DOMContentLoaded', renderDeals);
     </script>
+    <script src="main.js"></script>
 </body>
 </html>
