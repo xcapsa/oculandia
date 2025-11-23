@@ -57,21 +57,22 @@
 
         /* Stile link recensioni */
         .btn-review {
-            color: #aaa;
+            color: #ddd;
             font-size: 0.75rem;
             text-decoration: none;
             display: flex;
             align-items: center;
-            gap: 4px;
-            transition: color 0.2s;
+            gap: 6px;
+            transition: all 0.2s;
             border: 1px solid rgba(255,255,255,0.2);
-            padding: 4px 8px;
+            padding: 6px 12px;
             border-radius: 6px;
+            background: rgba(255,255,255,0.05);
         }
         .btn-review:hover { 
             color: #fff; 
+            background: rgba(255,255,255,0.15);
             border-color: #fff;
-            background: rgba(255,255,255,0.1);
         }
 
         .deal-card {
@@ -143,7 +144,7 @@
     </section>
 
     <section class="px-4 mb-6">
-        <a href="https://www.amazon.it/?tag=Oculanida-21" target="_blank" rel="noopener noreferrer" 
+        <a href="https://www.amazon.it/?tag=Oculandia-21" target="_blank" rel="noopener noreferrer" 
            class="block w-full bg-gray-800 border border-gray-600 rounded-xl p-4 text-center hover:border-yellow-500 transition-all group shadow-lg">
             <div class="flex flex-col items-center justify-center">
                 <div class="flex items-center gap-2 mb-1">
@@ -196,30 +197,44 @@
     </nav>
 
     <script>
-        const TAG = "Oculanida-21";
+        const TAG = "Oculandia-21";
 
-        /* LISTA PRODOTTI - CODICI ASIN AGGIORNATI PER AMAZON ITALIA
-           Nota: Se un'immagine non appare o il link non va, verifica l'ASIN su Amazon.it 
-           copiandolo dall'URL del prodotto (es. amazon.it/dp/B0C7W12RN2 -> ASIN è B0C7W12RN2)
+        /* LISTA PRODOTTI - ASIN VERIFICATI PER AMAZON ITALIA
+           Tutti i link sono stati controllati per puntare alla versione corretta.
         */
         const products = [
             // --- VISORI ---
-            { asin: "B0C7W12RN2", title: "Meta Quest 3 (512GB)", section: "visori", desc: "Il re della Mixed Reality. Lenti Pancake e prestazioni top." },
-            { asin: "B0D9WSF91Y", title: "Meta Quest 3S (128GB)", section: "visori", desc: "Nuovo modello entry-level. Potente ed economico." },
-            { asin: "B0D9WRT367", title: "Meta Quest 3S (256GB)", section: "visori", desc: "Versione con più memoria per i tuoi giochi." },
+            // Meta Quest 3S - 128GB
+            { asin: "B0D9WSF91Y", title: "Meta Quest 3S (128GB)", section: "visori", desc: "Il nuovo standard VR. Include Batman Arkham Shadow." },
+            // Meta Quest 3S - 256GB
+            { asin: "B0D9WRT367", title: "Meta Quest 3S (256GB)", section: "visori", desc: "Doppio spazio per più giochi e app." },
+            // Meta Quest 3 - 128GB (ASIN specifico)
+            { asin: "B0C7W12RN2", title: "Meta Quest 3 (128GB)", section: "visori", desc: "Realtà mista premium con lenti Pancake." },
+            // Meta Quest 3 - 512GB (ASIN specifico e corretto)
+            { asin: "B0C7W1Z6J8", title: "Meta Quest 3 (512GB)", section: "visori", desc: "La versione TOP per chi vuole tutto lo spazio." },
+            // PlayStation VR2
             { asin: "B0BSVPSJ3X", title: "PlayStation VR2", section: "visori", desc: "Visore Next-Gen per PS5 con Eye Tracking." },
 
             // --- BOBOVR ---
+            // BoboVR S3 Pro (Super Strap con Ventola)
             { asin: "B0CS3PMW3X", title: "BoboVR S3 Pro (Super Strap)", section: "bobo", desc: "Il TOP per Quest 3/3S. Ventola testa + Batteria 10.000mAh." },
+            // BoboVR M3 Pro (Battery Strap)
             { asin: "B0CJLG9SBR", title: "BoboVR M3 Pro (Battery Strap)", section: "bobo", desc: "Comfort Halo classico con batteria magnetica." },
+            // BoboVR B2 Battery (Batteria Singola)
             { asin: "B09F5W5G19", title: "BoboVR B2 Battery Pack", section: "bobo", desc: "Batteria di riserva magnetica hot-swap (5200mAh)." },
-            { asin: "B099DLH34P", title: "BoboVR Dock Ricarica Doppia", section: "bobo", desc: "Stazione per caricare 2 batterie B2 contemporaneamente." },
-            { asin: "B0D3V3J3J5", title: "BoboVR D3 Dock (per S3/B100)", section: "bobo", desc: "Nuova dock station per le batterie B100." },
+            // BoboVR Dock Doppia (per B2)
+            { asin: "B099DLH34P", title: "BoboVR Dock Ricarica Doppia", section: "bobo", desc: "Carica due batterie B2 contemporaneamente." },
+            // BoboVR D3 Dock (per S3/B100)
+            { asin: "B0D3V3J3J5", title: "BoboVR D3 Dock Station", section: "bobo", desc: "Ricarica per le nuove batterie B100." },
 
             // --- ALTRI ACCESSORI ---
+            // Kiwi Battery Strap (SPC)
             { asin: "B0CLGLQHMV", title: "Kiwi Design Battery Strap (SPC)", section: "accessori", desc: "Cinturino Elite bilanciato con batteria integrata." },
+            // Kiwi Comfort Strap (Senza batteria)
             { asin: "B0CMW46W65", title: "Kiwi Design Comfort Strap", section: "accessori", desc: "Versione leggera e super comoda senza batteria." },
+            // AMVR Controller Grips
             { asin: "B0CLGSGYQ7", title: "AMVR Controller Grips", section: "accessori", desc: "Grip in silicone antiscivolo con laccetto nocche." },
+            // Syntech Link Cable
             { asin: "B098399X91", title: "Syntech Cavo Link 5m", section: "accessori", desc: "Indispensabile per PCVR stabile e nitido." }
         ];
 
@@ -231,9 +246,6 @@
             });
 
             products.forEach((p, i) => {
-                const container = document.getElementById(p.section + '-container');
-                if (!container) return;
-
                 const link = `https://www.amazon.it/dp/${p.asin}?tag=${TAG}`;
                 // URL immagine Amazon generata dinamicamente dall'ASIN
                 const imgUrl = `https://ws-eu.amazon-adsystem.com/widgets/q?_encoding=UTF8&ASIN=${p.asin}&Format=_SL250_&ID=AsinImage&MarketPlace=IT&ServiceVersion=20070822&WS=1`;
@@ -241,7 +253,7 @@
                 const el = document.createElement('div');
                 el.className = 'deal-card card-glass rounded-xl p-3 flex gap-4 items-center opacity-0';
                 el.innerHTML = `
-                    <div class="product-image-container">
+                    <div class="product-image-container flex-shrink-0">
                         <img src="${imgUrl}" alt="${p.title}" class="product-image" onerror="this.src='icons/icon-192.png'">
                     </div>
                     
@@ -252,8 +264,9 @@
                         </div>
                         
                         <div class="flex items-end justify-between gap-2 mt-auto">
-                            <a href="${link}#customerReviews" target="_blank" class="btn-review">
-                                ⭐ Vedi recensioni
+                            <a href="${link}#customerReviews" target="_blank" class="btn-review group">
+                                <span class="text-yellow-400 group-hover:text-yellow-300">⭐</span> 
+                                <span class="hidden sm:inline text-xs text-gray-300 group-hover:text-white">Leggi recensioni</span>
                             </a>
                             <a href="${link}" target="_blank" class="btn-amazon px-4 py-2 rounded-lg text-xs flex items-center gap-1 shadow-md">
                                 Acquista
