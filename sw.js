@@ -9,143 +9,96 @@
  * background.  See MDN guides for more on service worker strategies【918242469817152†L268-L308】.
  */
 
-const VERSION = 'v1.0.0';
-const STATIC_CACHE = `oculandia-static-${VERSION}`;
-const RUNTIME_CACHE = 'oculandia-runtime';
-const OFFLINE_URL = '/offline.html';
-
-// Files to precache during install.  These are the core pages and assets
-// required for the app to load even when offline.  If you add new pages
-// or move files, update this list accordingly.
-const PRECACHE_ASSETS = [
+const CACHE_NAME = 'oculandia-cache-v2'; // Ho cambiato v1 in v2 per forzare l'aggiornamento
+const urlsToCache = [
   '/',
   '/index.html',
-  '/events.html',
   '/deals.html',
+  '/events.html',
+  '/shop.html',
+  '/social.html',
+  '/minecraft.html',
+  '/offline.html',
+  '/login.html',
+  '/register.html',
   '/profile.html',
   '/main.js',
-  '/manifest.json',
+  '/friends.js',
+  '/login.js',
+  '/register.js',
+  '/profile.js',
   '/icons/icon-192.png',
   '/icons/icon-512.png',
-  '/offline.html'
+  '/resources/hero-vr-gaming.png',
+  '/resources/minecraft-blurred.jpg',
+  '/manifest.json'
 ];
 
-// Install event: precache static assets
-self.addEventListener('install', (event) => {
+// Installazione: scarica e salva i file
+self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(STATIC_CACHE).then((cache) => cache.addAll(PRECACHE_ASSETS))
+    caches.open(CACHE_NAME)
+      .then(cache => {
+        console.log('Opened cache');
+        return cache.addAll(urlsToCache);
+      })
   );
-  self.skipWaiting();
+  self.skipWaiting(); // Forza l'attivazione immediata del nuovo SW
 });
 
-// Activate event: remove old caches
-self.addEventListener('activate', (event) => {
+// Attivazione: pulisce la vecchia cache (es. v1)
+self.addEventListener('activate', event => {
+  const cacheWhitelist = [CACHE_NAME];
   event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(
-        keys
-          .filter((key) => key !== STATIC_CACHE && key !== RUNTIME_CACHE)
-          .map((key) => caches.delete(key))
-      )
-    )
-  );
-  self.clients.claim();
-});
-
-// Fetch handler: route requests based on type
-self.addEventListener('fetch', (event) => {
-  const { request } = event;
-
-  // Only handle GET requests; ignore others (e.g., POST for forms)
-  if (request.method !== 'GET') return;
-
-  const url = new URL(request.url);
-  const isSameOrigin = url.origin === self.location.origin;
-
-  // For page navigations: try network first with timeout, then cache, then offline page
-  if (request.mode === 'navigate' || request.destination === 'document') {
-    event.respondWith(handleNavigation(request));
-    return;
-  }
-
-  // For same‑origin static assets: serve from cache first, then network
-  const staticExtensions = ['.html', '.js', '.css', '.png', '.svg', '.webp', '.jpg', '.jpeg', '.ico', '.json'];
-  const isStaticAsset = isSameOrigin && staticExtensions.some((ext) => url.pathname.endsWith(ext));
-  if (isStaticAsset) {
-    event.respondWith(cacheFirst(request));
-    return;
-  }
-
-  // For images and other runtime resources (including cross‑origin): use stale‑while‑revalidate
-  if (
-    request.destination === 'image' ||
-    request.destination === 'style' ||
-    request.destination === 'script' ||
-    !isSameOrigin
-  ) {
-    event.respondWith(staleWhileRevalidate(request));
-    return;
-  }
-
-  // Default: just fetch from network; fallback to cache on failure
-  event.respondWith(
-    fetch(request).catch(() => caches.match(request))
-  );
-});
-
-// Handle navigation: network first, fallback to cache or offline page
-async function handleNavigation(request) {
-  try {
-    const response = await networkFirst(request, 3000);
-    return response;
-  } catch (err) {
-    // try cached version of this page
-    const cached = await caches.match(request);
-    if (cached) return cached;
-    // fallback to offline page
-    const offline = await caches.match(OFFLINE_URL);
-    return offline || new Response('Offline', { status: 503, statusText: 'Offline' });
-  }
-}
-
-// Cache‑first strategy for static assets
-async function cacheFirst(request) {
-  const cached = await caches.match(request);
-  if (cached) return cached;
-  const response = await fetch(request);
-  const cache = await caches.open(STATIC_CACHE);
-  cache.put(request, response.clone());
-  return response;
-}
-
-// Stale‑while‑revalidate strategy for runtime assets
-async function staleWhileRevalidate(request) {
-  const cache = await caches.open(RUNTIME_CACHE);
-  const cached = await cache.match(request);
-  const fetchPromise = fetch(request)
-    .then((networkResponse) => {
-      if (networkResponse && networkResponse.status === 200) {
-        cache.put(request, networkResponse.clone());
-      }
-      return networkResponse;
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames.map(cacheName => {
+          if (cacheWhitelist.indexOf(cacheName) === -1) {
+            console.log('Eliminazione vecchia cache:', cacheName);
+            return caches.delete(cacheName);
+          }
+        })
+      );
     })
-    .catch(() => cached);
-  return cached || fetchPromise;
-}
+  );
+  return self.clients.claim(); // Prende il controllo immediato della pagina
+});
 
-// Network first with timeout
-async function networkFirst(request, timeoutMs = 3000) {
-  const controller = new AbortController();
-  const id = setTimeout(() => controller.abort(), timeoutMs);
-  try {
-    const response = await fetch(request, { signal: controller.signal });
-    clearTimeout(id);
-    if (response && response.ok) return response;
-    throw new Error('Network response not ok');
-  } catch (err) {
-    clearTimeout(id);
-    const cached = await caches.match(request);
-    if (cached) return cached;
-    throw err;
-  }
-}
+// Fetch: serve i file dalla cache, se non ci sono prova online
+self.addEventListener('fetch', event => {
+  event.respondWith(
+    caches.match(event.request)
+      .then(response => {
+        // Cache hit - return response
+        if (response) {
+          return response;
+        }
+        return fetch(event.request).then(
+          function(response) {
+            // Se la risposta non è valida, ritorna
+            if(!response || response.status !== 200 || response.type !== 'basic') {
+              return response;
+            }
+
+            // Clona la risposta per metterla in cache per la prossima volta
+            var responseToCache = response.clone();
+
+            caches.open(CACHE_NAME)
+              .then(function(cache) {
+                // Non cachiamo richieste esterne (come le immagini Amazon) nel main cache
+                if(event.request.url.startsWith('http')) {
+                    // Opzionale: gestione cache dinamica per immagini esterne
+                }
+              });
+
+            return response;
+          }
+        ).catch(() => {
+            // Se siamo offline e la pagina non è in cache, mostra la pagina offline
+            if (event.request.mode === 'navigate') {
+                return caches.match('/offline.html');
+            }
+        });
+      })
+  );
+});
