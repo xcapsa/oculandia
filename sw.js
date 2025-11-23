@@ -9,7 +9,7 @@
  * background.  See MDN guides for more on service worker strategies【918242469817152†L268-L308】.
  */
 
-const CACHE_NAME = 'oculandia-cache-v2'; // Ho cambiato v1 in v2 per forzare l'aggiornamento
+const CACHE_NAME = 'oculandia-cache-v3'; // Incrementata versione a v3 per forzare update
 const urlsToCache = [
   '/',
   '/index.html',
@@ -34,19 +34,19 @@ const urlsToCache = [
   '/manifest.json'
 ];
 
-// Installazione: scarica e salva i file
+// Installazione
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => {
-        console.log('Opened cache');
+        console.log('Cache aperta');
         return cache.addAll(urlsToCache);
       })
   );
-  self.skipWaiting(); // Forza l'attivazione immediata del nuovo SW
+  self.skipWaiting();
 });
 
-// Attivazione: pulisce la vecchia cache (es. v1)
+// Attivazione e pulizia
 self.addEventListener('activate', event => {
   const cacheWhitelist = [CACHE_NAME];
   event.waitUntil(
@@ -54,47 +54,24 @@ self.addEventListener('activate', event => {
       return Promise.all(
         cacheNames.map(cacheName => {
           if (cacheWhitelist.indexOf(cacheName) === -1) {
-            console.log('Eliminazione vecchia cache:', cacheName);
             return caches.delete(cacheName);
           }
         })
       );
     })
   );
-  return self.clients.claim(); // Prende il controllo immediato della pagina
+  return self.clients.claim();
 });
 
-// Fetch: serve i file dalla cache, se non ci sono prova online
+// Fetch
 self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request)
       .then(response => {
-        // Cache hit - return response
         if (response) {
           return response;
         }
-        return fetch(event.request).then(
-          function(response) {
-            // Se la risposta non è valida, ritorna
-            if(!response || response.status !== 200 || response.type !== 'basic') {
-              return response;
-            }
-
-            // Clona la risposta per metterla in cache per la prossima volta
-            var responseToCache = response.clone();
-
-            caches.open(CACHE_NAME)
-              .then(function(cache) {
-                // Non cachiamo richieste esterne (come le immagini Amazon) nel main cache
-                if(event.request.url.startsWith('http')) {
-                    // Opzionale: gestione cache dinamica per immagini esterne
-                }
-              });
-
-            return response;
-          }
-        ).catch(() => {
-            // Se siamo offline e la pagina non è in cache, mostra la pagina offline
+        return fetch(event.request).catch(() => {
             if (event.request.mode === 'navigate') {
                 return caches.match('/offline.html');
             }
