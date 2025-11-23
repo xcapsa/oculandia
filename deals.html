@@ -25,7 +25,7 @@
             color: var(--pure-white);
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
-            padding-bottom: 80px; /* Spazio per la nav */
+            padding-bottom: 90px; /* Spazio per la nav */
         }
 
         .orbitron { font-family: 'Orbitron', monospace; }
@@ -40,29 +40,27 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
+        /* Stile pulsante Amazon principale */
         .btn-amazon {
-            background: #FF9900; /* Amazon Orange */
-            color: black;
+            background: linear-gradient(to bottom, #f8e3ad, #EEBA37);
+            color: #111;
             font-weight: 600;
-            transition: all 0.3s ease;
+            border: 1px solid #a88734;
+            transition: all 0.2s ease;
         }
-
         .btn-amazon:hover {
-            background: #ffac31;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(255, 153, 0, 0.3);
+            background: linear-gradient(to bottom, #fcf5db, #f3d078);
+            transform: translateY(-1px);
         }
 
-        .nav-bottom {
-            background: rgba(27, 38, 59, 0.95);
-            backdrop-filter: blur(20px);
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        /* Stile pulsante recensioni */
+        .btn-review {
+            color: #ccc;
+            font-size: 0.75rem;
+            text-decoration: underline;
+            transition: color 0.2s;
         }
-
-        .nav-item {
-            transition: all 0.3s ease;
-        }
-        .nav-item.active { color: var(--accent-green); }
+        .btn-review:hover { color: #fff; }
 
         .deal-card {
             transition: all 0.3s ease;
@@ -73,45 +71,58 @@
             border-color: var(--accent-green);
         }
 
-        .product-image {
-            mix-blend-mode: multiply; /* Aiuta a fondere lo sfondo bianco delle immagini Amazon */
-            border-radius: 8px;
+        /* Mix blend per rendere trasparenti le immagini bianche di Amazon */
+        .product-image-container {
             background: white;
-            padding: 4px;
+            border-radius: 8px;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .product-image {
+            mix-blend-mode: multiply;
+            max-height: 100%;
+            max-width: 100%;
+            object-fit: contain;
         }
         
-        .flash-sale {
-            background: linear-gradient(45deg, #FF6B6B, #4ECDC4, #45B7D1);
-            background-size: 200% 200%;
-            animation: gradient 5s ease infinite;
+        .nav-bottom {
+            background: rgba(27, 38, 59, 0.95);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
-        @keyframes gradient { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        .nav-item.active { color: var(--accent-green); }
     </style>
 </head>
 <body>
 
-    <header class="hero-gradient p-4 sticky top-0 z-20 shadow-lg">
-        <div class="flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-                <img src="icons/icon-192.png" alt="Logo" class="w-10 h-10 rounded-full border-2 border-green-500">
-                <div>
-                    <h1 class="text-xl font-bold orbitron">Sconti VR</h1>
-                    <p class="text-xs text-gray-300">Offerte Amazon Selezionate</p>
-                </div>
+    <header class="hero-gradient p-4 sticky top-0 z-20 shadow-lg flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+            <img src="icons/icon-192.png" alt="Logo" class="w-10 h-10 rounded-full border-2 border-green-500">
+            <div>
+                <h1 class="text-xl font-bold orbitron">Sconti VR</h1>
+                <p class="text-xs text-gray-300">Selezione Ufficiale</p>
             </div>
         </div>
     </header>
 
     <section class="px-4 py-4">
-        <div class="flash-sale rounded-xl p-4 text-center shadow-lg">
-            <h3 class="text-lg font-bold orbitron text-white drop-shadow-md">SUPPORTO COMMUNITY</h3>
-            <p class="text-sm text-white font-medium mt-1">Acquistando da questi link supporti Oculandia senza costi aggiuntivi!</p>
-        </div>
+        <a href="https://www.amazon.it/?tag=Oculanida-21" target="_blank" rel="noopener noreferrer" 
+           class="block w-full bg-gradient-to-r from-gray-800 to-gray-900 border border-gray-600 rounded-xl p-4 text-center shadow-lg hover:border-green-500 transition-all">
+            <div class="flex flex-col items-center justify-center">
+                <span class="text-lg font-bold text-white orbitron mb-1">CERCHI ALTRO?</span>
+                <div class="flex items-center space-x-2 text-green-400 text-sm">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                    <span>Vai su Amazon.it (Affiliate)</span>
+                </div>
+            </div>
+        </a>
     </section>
 
     <section class="px-4">
         <div id="deals-container" class="space-y-4">
-            <div class="text-center py-10 text-gray-400">Caricamento offerte in corso...</div>
+            <div class="text-center py-10 text-gray-400">Caricamento prodotti...</div>
         </div>
     </section>
 
@@ -145,114 +156,78 @@
     </nav>
 
     <script>
-        /* CONFIGURAZIONE PRODOTTI 
-           Aggiungi qui sotto gli ASIN dei prodotti Amazon che vuoi mostrare.
-           L'immagine si aggiorna automaticamente dall'ASIN.
-        */
-        const AFFILIATE_TAG = "Oculanida-21";
-        
-        const amazonDeals = [
-            {
-                asin: "B0C7W12RN2",
-                title: "Meta Quest 3 - 128GB",
-                desc: "Realtà Mista rivoluzionaria, prestazioni potenti.",
-                category: "Hardware"
-            },
-            {
-                asin: "B0C7W12RN2", // Spesso condividono la pagina, controlla se esiste ASIN specifico per il 512GB o usa lo stesso link
-                title: "Meta Quest 3 - 512GB",
-                desc: "La versione definitiva con massimo spazio di archiviazione.",
-                category: "Hardware"
-            },
-            {
-                asin: "B0CMW46W65",
-                title: "KIWI design Cinturino Comfort (Quest 3)",
-                desc: "Migliora il comfort e bilancia il peso del visore.",
-                category: "Accessori"
-            },
-            {
-                asin: "B0CJLG9SBR",
-                title: "BOBOVR M3 Pro - Batteria Strap",
-                desc: "Cinturino con batteria magnetica hot-swap.",
-                category: "Accessori"
-            },
-            {
-                asin: "B098399X91",
-                title: "Syntech Cavo Link 5m",
-                desc: "Per giocare ai titoli PC VR con massima qualità.",
-                category: "Cavi"
-            },
-            {
-                asin: "B0BSVPSJ3X",
-                title: "PlayStation VR2",
-                desc: "Il visore di nuova generazione per PS5.",
-                category: "Hardware"
-            }
+        const TAG = "Oculanida-21";
+
+        /* LISTA PRODOTTI - ASIN AGGIORNATI */
+        const products = [
+            // VISORI
+            { asin: "B0C7W12RN2", title: "Meta Quest 3 (512GB)", cat: "Visori", desc: "Il top di gamma per la realtà mista." },
+            { asin: "B0D9WSF91Y", title: "Meta Quest 3S (128GB)", cat: "Visori", desc: "Nuovo modello entry-level potente." },
+            { asin: "B0D9WRT367", title: "Meta Quest 3S (256GB)", cat: "Visori", desc: "Più spazio per i tuoi giochi." },
+
+            // ACCESSORI BOBOVR
+            { asin: "B0CS3PMW3X", title: "BoboVR S3 Pro (Super Strap)", cat: "BoboVR", desc: "Ventola e batteria 10.000mAh per Q3/Q3S." },
+            { asin: "B0CJLG9SBR", title: "BoboVR M3 Pro (Battery Strap)", cat: "BoboVR", desc: "Il classico comfort Halo per Quest 3." },
+            { asin: "B09F5W5G19", title: "BoboVR B2 Battery Pack", cat: "BoboVR", desc: "Batteria di riserva magnetica (5200mAh)." },
+            { asin: "B099DLH34P", title: "BoboVR Dock di Ricarica", cat: "BoboVR", desc: "Carica due batterie B2 contemporaneamente." },
+
+            // ACCESSORI KIWI DESIGN
+            { asin: "B0CLGLQHMV", title: "Kiwi Design Battery Strap (SPC)", cat: "Kiwi", desc: "Bilanciamento perfetto e ricarica singola." },
+            { asin: "B0CMW46W65", title: "Kiwi Design Comfort Strap", cat: "Kiwi", desc: "Versione leggera senza batteria." },
+            
+            // CONTROLLER & ACCESSORI
+            { asin: "B0BSVPSJ3X", title: "PlayStation VR2", cat: "Console", desc: "Visore next-gen per PS5." },
+            { asin: "B098399X91", title: "Cavo Link 5m (Syntech)", cat: "Accessori", desc: "Indispensabile per PCVR stabile." }
         ];
 
-        // Funzione per generare l'URL immagine automatico di Amazon
-        function getAmazonImage(asin) {
-            // Utilizzo del servizio widget pubblico di Amazon per le immagini
-            return `https://ws-eu.amazon-adsystem.com/widgets/q?_encoding=UTF8&ASIN=${asin}&Format=_SL250_&ID=AsinImage&MarketPlace=IT&ServiceVersion=20070822&WS=1`;
-        }
-
-        // Funzione per renderizzare la griglia
-        function renderDeals() {
+        function render() {
             const container = document.getElementById('deals-container');
             container.innerHTML = '';
 
-            amazonDeals.forEach((deal, index) => {
-                // Link affiliato
-                const affiliateLink = `https://www.amazon.it/dp/${deal.asin}?tag=${AFFILIATE_TAG}`;
+            products.forEach((p, i) => {
+                const link = `https://www.amazon.it/dp/${p.asin}?tag=${TAG}`;
+                // URL immagine Amazon generata dinamicamente dall'ASIN
+                const imgUrl = `https://ws-eu.amazon-adsystem.com/widgets/q?_encoding=UTF8&ASIN=${p.asin}&Format=_SL250_&ID=AsinImage&MarketPlace=IT&ServiceVersion=20070822&WS=1`;
                 
-                const card = document.createElement('div');
-                card.className = 'deal-card card-glass rounded-xl p-4 flex items-center space-x-4 opacity-0'; // opacity-0 per animazione
-                
-                card.innerHTML = `
-                    <div class="relative w-24 h-24 flex-shrink-0 bg-white rounded-lg p-1 flex items-center justify-center overflow-hidden">
-                        <img src="${getAmazonImage(deal.asin)}" 
-                             alt="${deal.title}" 
-                             class="max-w-full max-h-full object-contain mix-blend-multiply"
-                             onerror="this.src='icons/icon-192.png'">
+                const el = document.createElement('div');
+                el.className = 'deal-card card-glass rounded-xl p-3 flex gap-4 items-center opacity-0';
+                el.innerHTML = `
+                    <div class="product-image-container w-24 h-24 flex-shrink-0">
+                        <img src="${imgUrl}" alt="${p.title}" class="product-image">
                     </div>
-                    
                     <div class="flex-1 min-w-0">
-                        <div class="flex justify-between items-start">
-                            <span class="text-xs text-gray-400 bg-gray-800 px-2 py-0.5 rounded mb-1">${deal.category}</span>
-                            <div class="text-yellow-400 text-xs">★★★★☆</div>
+                        <div class="flex justify-between items-start mb-1">
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-green-400 border border-green-900 bg-green-900/20 px-2 py-0.5 rounded">${p.cat}</span>
                         </div>
-                        <h4 class="font-bold text-sm text-white truncate mb-1">${deal.title}</h4>
-                        <p class="text-xs text-gray-400 mb-3 line-clamp-2">${deal.desc}</p>
+                        <h3 class="font-bold text-sm leading-tight text-white mb-1 truncate">${p.title}</h3>
+                        <p class="text-xs text-gray-400 mb-3 line-clamp-2">${p.desc}</p>
                         
-                        <div class="flex justify-between items-center">
-                            <div class="flex flex-col">
-                                <span class="text-xs text-gray-500">Prezzo Amazon</span>
-                                <span class="text-sm font-bold text-green-400">Verifica offerta</span>
-                            </div>
-                            <a href="${affiliateLink}" target="_blank" rel="noopener noreferrer" class="btn-amazon px-4 py-2 rounded-lg text-xs shadow-lg flex items-center gap-1">
-                                Acquista
-                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                        <div class="flex items-center justify-between gap-2">
+                            <a href="${link}#customerReviews" target="_blank" class="btn-review">
+                                ⭐ Vedi recensioni
+                            </a>
+                            <a href="${link}" target="_blank" class="btn-amazon px-3 py-1.5 rounded text-xs flex items-center gap-1 shadow-md">
+                                Vedi Offerta
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                             </a>
                         </div>
                     </div>
                 `;
-                
-                container.appendChild(card);
+                container.appendChild(el);
 
-                // Animazione ingresso
+                // Animazione
                 anime({
-                    targets: card,
+                    targets: el,
                     translateY: [20, 0],
                     opacity: [0, 1],
-                    duration: 600,
-                    delay: index * 100,
-                    easing: 'easeOutCubic'
+                    duration: 500,
+                    delay: i * 100,
+                    easing: 'easeOutQuad'
                 });
             });
         }
 
-        document.addEventListener('DOMContentLoaded', renderDeals);
+        document.addEventListener('DOMContentLoaded', render);
     </script>
-    <script src="main.js"></script>
 </body>
 </html>
