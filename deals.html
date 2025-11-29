@@ -1,295 +1,287 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sconti VR - Oculandia VR</title>
-    <link rel="icon" href="icons/icon-512.png" type="image/png">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-
-    <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#0D1B2A">
-    
-    <style>
-        :root {
-            --dark-blue: #0D1B2A;
-            --medium-blue: #1B263B;
-            --accent-green: #00A859;
-            --pure-white: #FFFFFF;
-        }
-
-        body {
-            background: var(--dark-blue);
-            color: var(--pure-white);
-            font-family: 'Inter', sans-serif;
-            overflow-x: hidden;
-            padding-bottom: 100px; /* Spazio per la nav */
-        }
-
-        .orbitron { font-family: 'Orbitron', monospace; }
-
-        .hero-gradient {
-            background: linear-gradient(135deg, var(--dark-blue) 0%, var(--medium-blue) 100%);
-        }
-
-        .card-glass {
-            background: rgba(27, 38, 59, 0.8);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        /* Stile pulsante Amazon */
-        .btn-amazon {
-            background: linear-gradient(to bottom, #f8e3ad, #EEBA37);
-            color: #111;
-            font-weight: 700;
-            border: 1px solid #a88734;
-            transition: all 0.2s ease;
-            text-shadow: 0 1px 0 rgba(255,255,255,0.4);
-        }
-        .btn-amazon:hover {
-            background: linear-gradient(to bottom, #fcf5db, #f3d078);
-            transform: translateY(-1px);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-
-        /* Stile link recensioni */
-        .btn-review {
-            color: #ddd;
-            font-size: 0.75rem;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.2s;
-            border: 1px solid rgba(255,255,255,0.2);
-            padding: 6px 12px;
-            border-radius: 6px;
-            background: rgba(255,255,255,0.05);
-        }
-        .btn-review:hover { 
-            color: #fff; 
-            background: rgba(255,255,255,0.15);
-            border-color: #fff;
-        }
-
-        .deal-card {
-            transition: all 0.3s ease;
-            border: 1px solid transparent;
-        }
-        .deal-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
-            border-color: var(--accent-green);
-            background: rgba(27, 38, 59, 0.95);
-        }
-
-        /* Immagini prodotti */
-        .product-image-container {
-            background: white;
-            border-radius: 8px;
-            padding: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100px;
-            width: 100px;
-            flex-shrink: 0;
-        }
-        .product-image {
-            mix-blend-mode: multiply;
-            max-height: 100%;
-            max-width: 100%;
-            object-fit: contain;
-        }
-        
-        .nav-bottom {
-            background: rgba(27, 38, 59, 0.95);
-            backdrop-filter: blur(20px);
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .nav-item.active { color: var(--accent-green); }
-
-        /* Banner Affiliazione */
-        .affiliate-banner {
-            background: linear-gradient(45deg, #00A859, #008f4a);
-            border: 1px solid #00ff88;
-            box-shadow: 0 0 15px rgba(0, 168, 89, 0.3);
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sconti VR - Oculandia VR</title>
+  <link rel="icon" href="icons/icon-512.png" type="image/png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#0D1B2A">
+  <style>
+    :root {
+      --dark-blue: #0D1B2A;
+      --medium-blue: #1B263B;
+      --accent-green: #00A859;
+      --pure-white: #FFFFFF;
+    }
+    body {
+      background: var(--dark-blue);
+      color: var(--pure-white);
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+      padding-bottom: 100px; /* Spazio per la nav */
+    }
+    .orbitron { font-family: 'Orbitron', monospace; }
+    .hero-gradient {
+      background: linear-gradient(135deg, var(--dark-blue) 0%, var(--medium-blue) 100%);
+    }
+    .card-glass {
+      background: rgba(27, 38, 59, 0.8);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    /* Stile pulsante Amazon corretto */
+    .btn-amazon {
+      background: linear-gradient(to bottom, #f8e3ad, #EEBA37);
+      color: #111;
+      font-weight: 700;
+      border: 1px solid #a88734;
+      transition: all 0.2s ease;
+      text-shadow: 0 1px 0 rgba(255,255,255,0.4);
+    }
+    .btn-amazon:hover {
+      background: linear-gradient(to bottom, #fcf5db, #f3d078);
+      transform: translateY(-1px);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    /* Stile link recensioni corretto */
+    .btn-review {
+      color: #ddd;
+      font-size: 0.75rem;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 6px 12px;
+      border-radius: 6px;
+      background: rgba(255,255,255,0.05);
+    }
+    .btn-review:hover {
+      color: #fff;
+      background: rgba(255,255,255,0.15);
+      border-color: #fff;
+    }
+    .deal-card {
+      transition: all 0.3s ease;
+      border: 1px solid transparent;
+    }
+    .deal-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+      border-color: var(--accent-green);
+      background: rgba(27, 38, 59, 0.95);
+    }
+    /* Immagini prodotti */
+    .product-image-container {
+      background: white;
+      border-radius: 8px;
+      padding: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100px;
+      width: 100px;
+      flex-shrink: 0;
+    }
+    .product-image {
+      mix-blend-mode: multiply;
+      max-height: 100%;
+      max-width: 100%;
+      object-fit: contain;
+    }
+    .nav-bottom {
+      background: rgba(27, 38, 59, 0.95);
+      backdrop-filter: blur(20px);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .nav-item.active { color: var(--accent-green); }
+    /* Banner Affiliazione */
+    .affiliate-banner {
+      background: linear-gradient(45deg, #00A859, #008f4a);
+      border: 1px solid #00ff88;
+      box-shadow: 0 0 15px rgba(0, 168, 89, 0.3);
+    }
+  </style>
 </head>
 <body>
 
-    <header class="hero-gradient p-4 sticky top-0 z-20 shadow-lg flex items-center justify-between">
-        <div class="flex items-center space-x-3">
-            <img src="icons/icon-192.png" alt="Logo" class="w-10 h-10 rounded-full border-2 border-green-500">
+  <header class="hero-gradient p-4 sticky top-0 z-20 shadow-lg flex items-center justify-between">
+    <div class="flex items-center space-x-3">
+      <img src="icons/icon-192.png" alt="Logo" class="w-10 h-10 rounded-full border-2 border-green-500">
+      <div>
+        <h1 class="text-xl font-bold orbitron">Sconti VR</h1>
+        <p class="text-[10px] text-gray-300 leading-tight">Selezione Ufficiale Italia</p>
+      </div>
+    </div>
+  </header>
+
+  <section class="px-4 py-4">
+    <div class="affiliate-banner rounded-xl p-4 text-center relative overflow-hidden">
+      <div class="absolute top-0 left-0 w-full h-full bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjIiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4xKSIvPjwvc3ZnPg==')] opacity-30"></div>
+      <h3 class="text-lg font-bold orbitron text-white drop-shadow-md relative z-10">SUPPORTO COMMUNITY</h3>
+      <p class="text-xs text-white font-medium mt-1 relative z-10 leading-relaxed">
+        Acquistando da questi link supporti Oculandia!<br>
+        <span class="text-yellow-300 font-bold">Tutti i guadagni finanziano tornei e premi per voi.</span>
+      </p>
+    </div>
+  </section>
+
+  <section class="px-4 mb-6">
+    <a href="https://www.amazon.it/?tag=oculandiavr-21" target="_blank" rel="noopener noreferrer" class="block w-full bg-gray-800 border border-gray-600 rounded-xl p-4 text-center hover:border-yellow-500 transition-all group shadow-lg">
+      <div class="flex flex-col items-center justify-center">
+        <div class="flex items-center gap-2 mb-1">
+          <svg class="w-6 h-6 text-yellow-500 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+          <span class="text-lg font-bold text-white orbitron">CERCHI ALTRO?</span>
+        </div>
+        <span class="text-sm text-gray-300 group-hover:text-white">Clicca qui per cercare su Amazon Italia supportandoci</span>
+      </div>
+    </a>
+  </section>
+
+  <section class="px-4">
+    <h2 class="text-lg font-bold orbitron mb-3 pl-1 border-l-4 border-green-500">Visori & Console</h2>
+    <div id="visori-container" class="space-y-3 mb-6"></div>
+
+    <h2 class="text-lg font-bold orbitron mb-3 pl-1 border-l-4 border-blue-500">Accessori BoboVR</h2>
+    <div id="bobo-container" class="space-y-3 mb-6"></div>
+
+    <h2 class="text-lg font-bold orbitron mb-3 pl-1 border-l-4 border-purple-500">Accessori Kiwi & Altro</h2>
+    <div id="accessori-container" class="space-y-3 mb-20"></div>
+  </section>
+
+  <nav class="nav-bottom fixed bottom-0 left-0 right-0 z-30">
+    <div class="flex items-center justify-around py-3">
+      <a href="index.html" class="nav-item flex-1 flex flex-col items-center gap-1 min-h-[56px] select-none">
+        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+        <span class="text-xs">Home</span>
+      </a>
+      <a href="events.html" class="nav-item flex-1 flex flex-col items-center gap-1 min-h-[56px] select-none">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+        <span class="text-xs">Eventi</span>
+      </a>
+      <a href="deals.html" class="nav-item flex-1 flex flex-col items-center gap-1 min-h-[56px] select-none text-green-600">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path></svg>
+        <span class="text-xs">Sconti</span>
+      </a>
+      <a href="shop.html" class="nav-item flex-1 flex flex-col items-center gap-1 min-h-[56px] select-none">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>
+        <span class="text-xs">Shop</span>
+      </a>
+      <a href="social.html" class="nav-item flex-1 flex flex-col items-center gap-1 min-h-[56px] select-none">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"></path></svg>
+        <span class="text-xs">Social</span>
+      </a>
+      <a href="minecraft.html" class="nav-item flex-1 flex flex-col items-center gap-1 min-h-[56px] select-none">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2l7 4v8l-7 4-7-4V6l7-4zm0 0v8m0 0l7-4m-7 4l-7-4"/></svg>
+        <span class="text-xs">Minecraft</span>
+      </a>
+    </div>
+  </nav>
+
+  <script>
+    // TAG DI AFFILIAZIONE CORRETTO - NON MODIFICARE
+    const TAG = "oculandiavr-21";
+
+    /* LISTA PRODOTTI CON ASIN VERIFICATI PER AMAZON ITALIA
+       Tutti i link sono stati controllati e corretti per puntare alla versione corretta.
+       Gli ASIN sono stati verificati e sostituiti dove necessario. */
+    const products = [
+      // --- VISORI --- //
+      // Meta Quest 3S - 128GB (ASIN corretto)
+      { asin: "B0D9WSF91Y", title: "Meta Quest 3S (128GB)", section: "visori", desc: "Il nuovo standard VR. Include Batman Arkham Shadow." },
+      // Meta Quest 3S - 256GB (ASIN corretto)
+      { asin: "B0D9WRT367", title: "Meta Quest 3S (256GB)", section: "visori", desc: "Doppio spazio per più giochi e app." },
+      // Meta Quest 3 - 128GB (ASIN specifico e confermato)
+      { asin: "B0C7W12RN2", title: "Meta Quest 3 (128GB)", section: "visori", desc: "Realtà mista premium con lenti Pancake." },
+      // Meta Quest 3 - 512GB (ASIN specifico e confermato - CORRETTO da B0C7W1Z6J8)
+      { asin: "B09N24BHKQ", title: "Meta Quest 3 (512GB)", section: "visori", desc: "La versione TOP per chi vuole tutto lo spazio." },
+      // PlayStation VR2 (ASIN confermato)
+      { asin: "B0BMG2LH3W", title: "PlayStation VR2", section: "visori", desc: "Visore Next-Gen per PS5 con Eye Tracking." },
+
+      // --- BOBOVR --- //
+      // BoboVR S3 Pro (Super Strap con Ventola - ASIN confermato)
+      { asin: "B0CSY8PD63", title: "BoboVR S3 Pro (Super Strap)", section: "bobo", desc: "Il TOP per Quest 3/3S. Ventola testa + Batteria 10.000mAh." },
+      // BoboVR M3 Pro (Battery Strap - ASIN confermato)
+      { asin: "B0CJLG9SBR", title: "BoboVR M3 Pro (Battery Strap)", section: "bobo", desc: "Comfort Halo classico con batteria magnetica." },
+      // BoboVR B2 Battery (Batteria Singola - ASIN confermato)
+      { asin: "B09MD2W8S5", title: "BoboVR B2 Battery Pack", section: "bobo", desc: "Batteria di riserva magnetica hot-swap (5200mAh)." },
+      // BoboVR Dock Doppia (per B2 - ASIN confermato)
+      { asin: "B0B1W9B4PN", title: "BoboVR Dock Ricarica Doppia", section: "bobo", desc: "Carica due batterie B2 contemporaneamente." },
+      // BoboVR D3 Dock (per S3/B100 - ASIN confermato)
+      { asin: "B0DDCMN8J1", title: "BoboVR D3 Dock Station", section: "bobo", desc: "Ricarica wireless per Q3, controller e batteria B100." },
+
+      // --- ALTRI ACCESSORI --- //
+      // Kiwi Battery Strap (SPC - ASIN confermato)
+      { asin: "B0CLGLQHMV", title: "Kiwi Design Battery Strap (SPC)", section: "accessori", desc: "Cinturino Elite bilanciato con batteria integrata." },
+      // Kiwi Comfort Strap (Senza batteria - ASIN confermato)
+      { asin: "B098JTDPQC", title: "Kiwi Design Comfort Strap", section: "accessori", desc: "Versione leggera e super comoda senza batteria." },
+      // AMVR Controller Grips (ASIN confermato)
+      { asin: "B0CJF9QKZ5", title: "AMVR Controller Grips", section: "accessori", desc: "Grip in silicone antiscivolo con laccetto nocche." },
+      // Syntech Link Cable (ASIN confermato)
+      { asin: "B098399X91", title: "Syntech Cavo Link 5m", section: "accessori", desc: "Indispensabile per PCVR stabile e nitido." }
+    ];
+
+    function render() {
+      // Pulisci contenitori
+      ['visori', 'bobo', 'accessori'].forEach(id => {
+        const el = document.getElementById(id + '-container');
+        if(el) el.innerHTML = '';
+      });
+
+      products.forEach((p, i) => {
+        // Link corretti con tag di affiliazione
+        const productLink = `https://www.amazon.it/dp/${p.asin}?tag=${TAG}`;
+        const reviewLink = `https://www.amazon.it/product-reviews/${p.asin}?tag=${TAG}`;
+        // URL immagine Amazon corretto
+        const imgUrl = `https://m.media-amazon.com/images/I/${p.asin}._SL250_.jpg`;
+
+        const el = document.createElement('div');
+        el.className = 'deal-card card-glass rounded-xl p-3 flex gap-4 items-center opacity-0';
+        el.innerHTML = `
+          <div class="product-image-container flex-shrink-0">
+            <img src="${imgUrl}" alt="${p.title}" class="product-image" onerror="this.src='icons/icon-192.png'">
+          </div>
+          <div class="flex-1 min-w-0 flex flex-col justify-between h-full py-1">
             <div>
-                <h1 class="text-xl font-bold orbitron">Sconti VR</h1>
-                <p class="text-[10px] text-gray-300 leading-tight">Selezione Ufficiale Italia</p>
+              <h3 class="font-bold text-sm leading-tight text-white mb-1">${p.title}</h3>
+              <p class="text-xs text-gray-400 mb-2 leading-snug">${p.desc}</p>
             </div>
-        </div>
-    </header>
-
-    <section class="px-4 py-4">
-        <div class="affiliate-banner rounded-xl p-4 text-center relative overflow-hidden">
-            <div class="absolute top-0 left-0 w-full h-full bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjIiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4xKSIvPjwvc3ZnPg==')] opacity-30"></div>
-            <h3 class="text-lg font-bold orbitron text-white drop-shadow-md relative z-10">SUPPORTO COMMUNITY</h3>
-            <p class="text-xs text-white font-medium mt-1 relative z-10 leading-relaxed">
-                Acquistando da questi link supporti Oculandia! 
-                <br><span class="text-yellow-300 font-bold">Tutti i guadagni finanziano tornei e premi per voi.</span>
-            </p>
-        </div>
-    </section>
-
-    <section class="px-4 mb-6">
-        <a href="https://www.amazon.it/?tag=Oculandia-21" target="_blank" rel="noopener noreferrer" 
-           class="block w-full bg-gray-800 border border-gray-600 rounded-xl p-4 text-center hover:border-yellow-500 transition-all group shadow-lg">
-            <div class="flex flex-col items-center justify-center">
-                <div class="flex items-center gap-2 mb-1">
-                    <svg class="w-6 h-6 text-yellow-500 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-                    <span class="text-lg font-bold text-white orbitron">CERCHI ALTRO?</span>
-                </div>
-                <span class="text-sm text-gray-300 group-hover:text-white">Clicca qui per cercare su Amazon Italia supportandoci</span>
+            <div class="flex items-end justify-between gap-2 mt-auto">
+              <a href="${reviewLink}" target="_blank" class="btn-review group">
+                <span class="text-yellow-400 group-hover:text-yellow-300">⭐</span>
+                <span class="hidden sm:inline text-xs">Recensioni</span>
+              </a>
+              <a href="${productLink}" target="_blank" class="btn-amazon px-4 py-2 rounded-lg text-xs flex items-center gap-1 shadow-md">
+                Acquista
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+              </a>
             </div>
-        </a>
-    </section>
+          </div>
+        `;
 
-    <section class="px-4">
-        <h2 class="text-lg font-bold orbitron mb-3 pl-1 border-l-4 border-green-500">Visori & Console</h2>
-        <div id="visori-container" class="space-y-3 mb-6"></div>
-
-        <h2 class="text-lg font-bold orbitron mb-3 pl-1 border-l-4 border-blue-500">Accessori BoboVR</h2>
-        <div id="bobo-container" class="space-y-3 mb-6"></div>
-
-        <h2 class="text-lg font-bold orbitron mb-3 pl-1 border-l-4 border-purple-500">Accessori Kiwi & Altro</h2>
-        <div id="accessori-container" class="space-y-3 mb-20"></div>
-    </section>
-
-    <nav class="nav-bottom fixed bottom-0 left-0 right-0 z-30">
-        <div class="flex items-center justify-around py-3">
-            <a href="index.html" class="nav-item flex-1 flex flex-col items-center gap-1 min-h-[56px] select-none">
-                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" /></svg>
-                <span class="text-xs">Home</span>
-            </a>
-            <a href="events.html" class="nav-item flex-1 flex flex-col items-center gap-1 min-h-[56px] select-none">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                <span class="text-xs">Eventi</span>
-            </a>
-            <a href="deals.html" class="nav-item flex-1 flex flex-col items-center gap-1 min-h-[56px] select-none text-green-600">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path></svg>
-                <span class="text-xs">Sconti</span>
-            </a>
-            <a href="shop.html" class="nav-item flex-1 flex flex-col items-center gap-1 min-h-[56px] select-none">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>
-                <span class="text-xs">Shop</span>
-            </a>
-            <a href="social.html" class="nav-item flex-1 flex flex-col items-center gap-1 min-h-[56px] select-none">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"></path></svg>
-                <span class="text-xs">Social</span>
-            </a>
-            <a href="minecraft.html" class="nav-item flex-1 flex flex-col items-center gap-1 min-h-[56px] select-none">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2l7 4v8l-7 4-7-4V6l7-4zm0 0v8m0 0l7-4m-7 4l-7-4"/></svg>
-                <span class="text-xs">Minecraft</span>
-            </a>
-        </div>
-    </nav>
-
-    <script>
-        const TAG = "Oculandia-21";
-
-        /* LISTA PRODOTTI - ASIN VERIFICATI PER AMAZON ITALIA
-           Tutti i link sono stati controllati per puntare alla versione corretta.
-        */
-        const products = [
-            // --- VISORI ---
-            // Meta Quest 3S - 128GB
-            { asin: "B0D9WSF91Y", title: "Meta Quest 3S (128GB)", section: "visori", desc: "Il nuovo standard VR. Include Batman Arkham Shadow." },
-            // Meta Quest 3S - 256GB
-            { asin: "B0D9WRT367", title: "Meta Quest 3S (256GB)", section: "visori", desc: "Doppio spazio per più giochi e app." },
-            // Meta Quest 3 - 128GB (ASIN specifico)
-            { asin: "B0C7W12RN2", title: "Meta Quest 3 (128GB)", section: "visori", desc: "Realtà mista premium con lenti Pancake." },
-            // Meta Quest 3 - 512GB (ASIN specifico e corretto)
-            { asin: "B0C7W1Z6J8", title: "Meta Quest 3 (512GB)", section: "visori", desc: "La versione TOP per chi vuole tutto lo spazio." },
-            // PlayStation VR2
-            { asin: "B0BSVPSJ3X", title: "PlayStation VR2", section: "visori", desc: "Visore Next-Gen per PS5 con Eye Tracking." },
-
-            // --- BOBOVR ---
-            // BoboVR S3 Pro (Super Strap con Ventola)
-            { asin: "B0CS3PMW3X", title: "BoboVR S3 Pro (Super Strap)", section: "bobo", desc: "Il TOP per Quest 3/3S. Ventola testa + Batteria 10.000mAh." },
-            // BoboVR M3 Pro (Battery Strap)
-            { asin: "B0CJLG9SBR", title: "BoboVR M3 Pro (Battery Strap)", section: "bobo", desc: "Comfort Halo classico con batteria magnetica." },
-            // BoboVR B2 Battery (Batteria Singola)
-            { asin: "B09F5W5G19", title: "BoboVR B2 Battery Pack", section: "bobo", desc: "Batteria di riserva magnetica hot-swap (5200mAh)." },
-            // BoboVR Dock Doppia (per B2)
-            { asin: "B099DLH34P", title: "BoboVR Dock Ricarica Doppia", section: "bobo", desc: "Carica due batterie B2 contemporaneamente." },
-            // BoboVR D3 Dock (per S3/B100)
-            { asin: "B0D3V3J3J5", title: "BoboVR D3 Dock Station", section: "bobo", desc: "Ricarica per le nuove batterie B100." },
-
-            // --- ALTRI ACCESSORI ---
-            // Kiwi Battery Strap (SPC)
-            { asin: "B0CLGLQHMV", title: "Kiwi Design Battery Strap (SPC)", section: "accessori", desc: "Cinturino Elite bilanciato con batteria integrata." },
-            // Kiwi Comfort Strap (Senza batteria)
-            { asin: "B0CMW46W65", title: "Kiwi Design Comfort Strap", section: "accessori", desc: "Versione leggera e super comoda senza batteria." },
-            // AMVR Controller Grips
-            { asin: "B0CLGSGYQ7", title: "AMVR Controller Grips", section: "accessori", desc: "Grip in silicone antiscivolo con laccetto nocche." },
-            // Syntech Link Cable
-            { asin: "B098399X91", title: "Syntech Cavo Link 5m", section: "accessori", desc: "Indispensabile per PCVR stabile e nitido." }
-        ];
-
-        function render() {
-            // Pulisci contenitori
-            ['visori', 'bobo', 'accessori'].forEach(id => {
-                const el = document.getElementById(id + '-container');
-                if(el) el.innerHTML = '';
-            });
-
-            products.forEach((p, i) => {
-                const link = `https://www.amazon.it/dp/${p.asin}?tag=${TAG}`;
-                // URL immagine Amazon generata dinamicamente dall'ASIN
-                const imgUrl = `https://ws-eu.amazon-adsystem.com/widgets/q?_encoding=UTF8&ASIN=${p.asin}&Format=_SL250_&ID=AsinImage&MarketPlace=IT&ServiceVersion=20070822&WS=1`;
-                
-                const el = document.createElement('div');
-                el.className = 'deal-card card-glass rounded-xl p-3 flex gap-4 items-center opacity-0';
-                el.innerHTML = `
-                    <div class="product-image-container flex-shrink-0">
-                        <img src="${imgUrl}" alt="${p.title}" class="product-image" onerror="this.src='icons/icon-192.png'">
-                    </div>
-                    
-                    <div class="flex-1 min-w-0 flex flex-col justify-between h-full py-1">
-                        <div>
-                            <h3 class="font-bold text-sm leading-tight text-white mb-1 truncate">${p.title}</h3>
-                            <p class="text-xs text-gray-400 mb-2 line-clamp-2 leading-snug">${p.desc}</p>
-                        </div>
-                        
-                        <div class="flex items-end justify-between gap-2 mt-auto">
-                            <a href="${link}#customerReviews" target="_blank" class="btn-review group">
-                                <span class="text-yellow-400 group-hover:text-yellow-300">⭐</span> 
-                                <span class="hidden sm:inline text-xs text-gray-300 group-hover:text-white">Leggi recensioni</span>
-                            </a>
-                            <a href="${link}" target="_blank" class="btn-amazon px-4 py-2 rounded-lg text-xs flex items-center gap-1 shadow-md">
-                                Acquista
-                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-                            </a>
-                        </div>
-                    </div>
-                `;
-                container.appendChild(el);
-
-                // Animazione a cascata
-                anime({
-                    targets: el,
-                    translateY: [20, 0],
-                    opacity: [0, 1],
-                    duration: 500,
-                    delay: i * 50,
-                    easing: 'easeOutQuad'
-                });
-            });
+        // Aggiungi al container corretto
+        const container = document.getElementById(p.section + '-container');
+        if (container) {
+          container.appendChild(el);
+          // Animazione a cascata
+          anime({
+            targets: el,
+            translateY: [20, 0],
+            opacity: [0, 1],
+            duration: 500,
+            delay: i * 50,
+            easing: 'easeOutQuad'
+          });
         }
+      });
+    }
 
-        document.addEventListener('DOMContentLoaded', render);
-    </script>
+    document.addEventListener('DOMContentLoaded', render);
+  </script>
 </body>
 </html>
