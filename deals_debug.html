@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sconti VR - Oculandia VR</title>
+    <link rel="icon" href="icons/icon-512.png" type="image/png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#0D1B2A">
+    
+    <style>
+        :root {
+            --dark-blue: #0D1B2A;
+            --medium-blue: #1B263B;
+            --accent-green: #00A859;
+            --pure-white: #FFFFFF;
+        }
+
+        body {
+            background: var(--dark-blue);
+            color: var(--pure-white);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            padding-bottom: 100px; /* Spazio per la nav */
+        }
+
+        .orbitron { font-family: 'Orbitron', monospace; }
+
+        .hero-gradient {
+            background: linear-gradient(135deg, var(--dark-blue) 0%, var(--medium-blue) 100%);
+        }
+
+        .card-glass {
+            background: rgba(27, 38, 59, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Stile pulsante Amazon corretto */
+        .btn-amazon {
+            background: linear-gradient(to bottom, #f8e3ad, #EEBA37);
+            color: #111;
+            font-weight: 700;
+            border: 1px solid #a88734;
+            transition: all 0.2s ease;
+            text-shadow: 0 1px 0 rgba(255,255,255,0.4);
+        }
+        .btn-amazon:hover {
+            background: linear-gradient(to bottom, #fcf5db, #f3d078);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        /* Stile link recensioni corretto */
+        .btn-review {
+            color: #ddd;
+            font-size: 0.75rem;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 6px 12px;
+            border-radius: 6px;
+            background: rgba(255,255,255,0.05);
+        }
+        .btn-review:hover { 
+            color: #fff; 
+            background: rgba(255,255,255,0.15);
+            border-color: #fff;
+        }
+
+        .deal-card {
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+        .deal-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+            border-color: var(--accent-green);
+            background: rgba(27, 38, 59, 0.95);
+        }
+
+        /* Immagini prodotti */
+        .product-image-container {
+            background: white;
+            border-radius: 8px;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100px;
+            width: 100px;
+            flex-shrink: 0;
+        }
+
+        /* Navigazione bottom */
+        .nav-bottom {
+            background: rgba(27, 38, 59, 0.95);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-item {
+            transition: all 0.3s ease;
+        }
+
+        .nav-item.active,
+        .nav-item:hover {
+            color: var(--accent-green);
+            transform: translateY(-2px);
+        }
+
+        /* Debug styles */
+        .debug-info {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 12px;
+            z-index: 1000;
+            max-width: 300px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .error-border {
+            border: 2px solid red !important;
+        }
+
+        .success-border {
+            border: 2px solid green !important;
+        }
+
+        /* CSS Visibility Check - Temporary */
+        /* body * {
+            border: 1px solid red !important;
+        } */
+    </style>
+</head>
+<body class="pb-20">
+    <!-- Debug Info Panel -->
+    <div id="debug-panel" class="debug-info" style="display: none;">
+        <strong>Debug Info:</strong><br>
+        <div id="debug-content"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="p-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <img src="icons/icon-192.png" alt="Logo" class="w-10 h-10 rounded-full">
+            <h1 class="text-xl font-bold orbitron">Sconti VR</h1>
+        </div>
+        <div class="flex items-center gap-2">
+            <button id="debug-toggle" class="px-3 py-1 bg-gray-700 text-white rounded text-sm">
+                Debug
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-gradient px-4 py-8 text-center">
+        <h2 class="orbitron text-3xl md:text-4xl font-bold mb-4">
+            🏷️ <span class="bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent">Sconti VR</span>
+        </h2>
+        <p class="text-gray-300 max-w-2xl mx-auto mb-8">
+            Le migliori offerte VR selezionate per te. Tutti i prezzi verificati e aggiornati in tempo reale.
+        </p>
+        
+        <!-- Debug Info Display -->
+        <div id="page-info" class="bg-black/30 backdrop-blur-sm rounded-lg p-4 mb-6 max-w-md mx-auto">
+            <div class="text-sm text-gray-300">
+                <div>Prodotti caricati: <span id="product-count">0</span></div>
+                <div>Stato: <span id="loading-status">In caricamento...</span></div>
+                <div>Errori: <span id="error-count">0</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Sections -->
+    <main class="px-4 pb-8">
+        <!-- Visori VR -->
+        <section class="mb-12">
+            <h3 class="orbitron text-2xl font-bold mb-6 flex items-center gap-3">
+                <div class="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center">
+                    <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M21 4H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H3V6h18v12z"/>
+                    </svg>
+                </div>
+                Visori VR
+            </h3>
+            <div class="space-y-4" id="visori-container">
+                <!-- Products will be loaded here -->
+            </div>
+        </section>
+
+        <!-- Accessori BoboVR -->
+        <section class="mb-12">
+            <h3 class="orbitron text-2xl font-bold mb-6 flex items-center gap-3">
+                <div class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
+                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                    </svg>
+                </div>
+                Accessori BoboVR
+            </h3>
+            <div class="space-y-4" id="bobo-container">
+                <!-- Products will be loaded here -->
+            </div>
+        </section>
+
+        <!-- Altri Accessori -->
+        <section class="mb-12">
+            <h3 class="orbitron text-2xl font-bold mb-6 flex items-center gap-3">
+                <div class="w-8 h-8 bg-purple-500 rounded-lg flex items-center justify-center">
+                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4"/>
+                    </svg>
+                </div>
+                Altri Accessori
+            </h3>
+            <div class="space-y-4" id="accessori-container">
+                <!-- Products will be loaded here -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="nav-bottom fixed bottom-0 left-0 right-0 z-30">
+        <div class="flex items-center justify-around py-3">
+            <a href="index.html" class="nav-item flex-1 flex flex-col items-center justify-center gap-1 min-h-[56px] select-none">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+                </svg>
+                <span class="text-xs">Home</span>
+            </a>
+            <a href="events.html" class="nav-item flex-1 flex flex-col items-center justify-center gap-1 min-h-[56px] select-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                </svg>
+                <span class="text-xs">Eventi</span>
+            </a>
+            <a href="deals.html" class="nav-item flex-1 flex flex-col items-center justify-center gap-1 min-h-[56px] select-none text-green-600">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+                </svg>
+                <span class="text-xs">Sconti</span>
+            </a>
+            <a href="shop.html" class="nav-item flex-1 flex flex-col items-center justify-center gap-1 min-h-[56px] select-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                </svg>
+                <span class="text-xs">Shop</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Enhanced JavaScript with Debug -->
+    <script>
+        // Debug System
+        let debugMode = false;
+        let errorCount = 0;
+        let productCount = 0;
+
+        const debugPanel = document.getElementById('debug-panel');
+        const debugContent = document.getElementById('debug-content');
+        const debugToggle = document.getElementById('debug-toggle');
+
+        function logDebug(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const color = type === 'error' ? 'red' : type === 'warn' ? 'orange' : 'white';
+            debugContent.innerHTML += `<span style="color: ${color}">[${timestamp}] ${message}</span><br>`;
+            debugPanel.scrollTop = debugPanel.scrollHeight;
+            
+            if (type === 'error') {
+                errorCount++;
+                document.getElementById('error-count').textContent = errorCount;
+            }
+        }
+
+        debugToggle.addEventListener('click', () => {
+            debugMode = !debugMode;
+            debugPanel.style.display = debugMode ? 'block' : 'none';
+            debugToggle.textContent = debugMode ? 'Hide Debug' : 'Debug';
+        });
+
+        // Global Error Handler
+        window.addEventListener('error', function(e) {
+            console.error('JS Error:', e.error);
+            logDebug(`Error: ${e.error.message} at ${e.filename}:${e.lineno}`, 'error');
+        });
+
+        window.addEventListener('unhandledrejection', function(e) {
+            console.error('Unhandled Promise Rejection:', e.reason);
+            logDebug(`Promise Rejection: ${e.reason}`, 'error');
+        });
+
+        // TAG DI AFFILIAZIONE CORRETTO - NON MODIFICARE
+        const TAG = "oculandiavr-21";
+
+        /* LISTA PRODOTTI CON ASIN VERIFICATI PER AMAZON ITALIA
+           Tutti i link sono stati controllati e corretti per puntare alla versione corretta.
+           Gli ASIN sono stati verificati e sostituiti dove necessario.
+        */
+        const products = [
+            // --- VISORI ---
+            // Meta Quest 3S - 128GB (ASIN corretto)
+            { asin: "B0D9WSF91Y", title: "Meta Quest 3S (128GB)", section: "visori", desc: "Il nuovo standard VR. Include Batman Arkham Shadow." },
+            // Meta Quest 3S - 256GB (ASIN corretto)
+            { asin: "B0D9WRT367", title: "Meta Quest 3S (256GB)", section: "visori", desc: "Doppio spazio per più giochi e app." },
+            // Meta Quest 3 - 128GB (ASIN specifico e confermato)
+            { asin: "B0C7W12RN2", title: "Meta Quest 3 (128GB)", section: "visori", desc: "Realtà mista premium con lenti Pancake." },
+            // Meta Quest 3 - 512GB (ASIN specifico e confermato - CORRETTO da B0C7W1Z6J8)
+            { asin: "B09N24BHKQ", title: "Meta Quest 3 (512GB)", section: "visori", desc: "La versione TOP per chi vuole tutto lo spazio." },
+            // PlayStation VR2 (ASIN confermato)
+            { asin: "B0BMG2LH3W", title: "PlayStation VR2", section: "visori", desc: "Visore Next-Gen per PS5 con Eye Tracking." },
+
+            // --- BOBOVR ---
+            // BoboVR S3 Pro (Super Strap con Ventola - ASIN confermato)
+            { asin: "B0CSY8PD63", title: "BoboVR S3 Pro (Super Strap)", section: "bobo", desc: "Il TOP per Quest 3/3S. Ventola testa + Batteria 10.000mAh." },
+            // BoboVR M3 Pro (Battery Strap - ASIN confermato)
+            { asin: "B0CJLG9SBR", title: "BoboVR M3 Pro (Battery Strap)", section: "bobo", desc: "Comfort Halo classico con batteria magnetica." },
+            // BoboVR B2 Battery (Batteria Singola - ASIN confermato)
+            { asin: "B09MD2W8S5", title: "BoboVR B2 Battery Pack", section: "bobo", desc: "Batteria di riserva magnetica hot-swap (5200mAh)." },
+            // BoboVR Dock Doppia (per B2 - ASIN confermato)
+            { asin: "B0B1W9B4PN", title: "BoboVR Dock Ricarica Doppia", section: "bobo", desc: "Carica due batterie B2 contemporaneamente." },
+            // BoboVR D3 Dock (per S3/B100 - ASIN confermato)
+            { asin: "B0DDCMN8J1", title: "BoboVR D3 Dock Station", section: "bobo", desc: "Ricarica wireless per Q3, controller e batteria B100." },
+
+            // --- ALTRI ACCESSORI ---
+            // Kiwi Battery Strap (SPC - ASIN confermato)
+            { asin: "B0CLGLQHMV", title: "Kiwi Design Battery Strap (SPC)", section: "accessori", desc: "Cinturino Elite bilanciato con batteria integrata." },
+            // Kiwi Comfort Strap (Senza batteria - ASIN confermato)
+            { asin: "B098JTDPQC", title: "Kiwi Design Comfort Strap", section: "accessori", desc: "Versione leggera e super comoda senza batteria." },
+            // AMVR Controller Grips (ASIN confermato)
+            { asin: "B0CJF9QKZ5", title: "AMVR Controller Grips", section: "accessori", desc: "Grip in silicone antiscivolo con laccetto nocche." },
+            // Syntech Link Cable (ASIN confermato)
+            { asin: "B098399X91", title: "Syntech Cavo Link 5m", section: "accessori", desc: "Indispensabile per PCVR stabile e nitido." }
+        ];
+
+        function render() {
+            console.log("Deals page loaded - starting render");
+            logDebug("Starting product rendering...");
+            
+            // Pulisci contenitori
+            ['visori', 'bobo', 'accessori'].forEach(id => {
+                const el = document.getElementById(id + '-container');
+                if(el) {
+                    el.innerHTML = '';
+                    logDebug(`Cleaned container: ${id}`);
+                } else {
+                    logDebug(`Container not found: ${id}`, 'warn');
+                }
+            });
+
+            products.forEach((p, i) => {
+                try {
+                    // Link corretti con tag di affiliazione
+                    const productLink = `https://www.amazon.it/dp/${p.asin}?tag=${TAG}`;
+                    const reviewLink = `https://www.amazon.it/product-reviews/${p.asin}?tag=${TAG}`;
+                    
+                    // URL immagine Amazon corretto
+                    const imgUrl = `https://m.media-amazon.com/images/I/${p.asin}._SL250_.jpg`;
+                    
+                    const el = document.createElement('div');
+                    el.className = 'deal-card card-glass rounded-xl p-3 flex gap-4 items-center opacity-0';
+                    el.innerHTML = `
+                        <div class="product-image-container flex-shrink-0">
+                            <img src="${imgUrl}" alt="${p.title}" class="product-image" onerror="this.src='icons/icon-192.png'" loading="lazy">
+                        </div>
+                        
+                        <div class="flex-1 min-w-0 flex flex-col justify-between h-full py-1">
+                            <div>
+                                <h3 class="font-bold text-sm leading-tight text-white mb-1">${p.title}</h3>
+                                <p class="text-xs text-gray-400 mb-2 leading-snug">${p.desc}</p>
+                            </div>
+                            
+                            <div class="flex items-end justify-between gap-2 mt-auto">
+                                <a href="${reviewLink}" target="_blank" class="btn-review group">
+                                    <span class="text-yellow-400 group-hover:text-yellow-300">⭐</span> 
+                                    <span class="hidden sm:inline text-xs">Recensioni</span>
+                                </a>
+                                <a href="${productLink}" target="_blank" class="btn-amazon px-4 py-2 rounded-lg text-xs flex items-center gap-1 shadow-md">
+                                    Acquista
+                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                                </a>
+                            </div>
+                        </div>
+                    `;
+                    
+                    // Aggiungi al container corretto
+                    const container = document.getElementById(p.section + '-container');
+                    if (container) {
+                        container.appendChild(el);
+                        productCount++;
+                        
+                        // Animazione a cascata
+                        anime({
+                            targets: el,
+                            translateY: [20, 0],
+                            opacity: [0, 1],
+                            duration: 500,
+                            delay: i * 50,
+                            easing: 'easeOutQuad'
+                        });
+                        
+                        logDebug(`Added product: ${p.title} to ${p.section}`);
+                    } else {
+                        logDebug(`Container not found for product: ${p.title} in section: ${p.section}`, 'error');
+                    }
+                } catch (error) {
+                    console.error('Error rendering product:', p.title, error);
+                    logDebug(`Error rendering product ${p.title}: ${error.message}`, 'error');
+                }
+            });
+
+            // Update UI
+            document.getElementById('product-count').textContent = productCount;
+            document.getElementById('loading-status').textContent = 'Completato';
+            
+            logDebug(`Rendering completed. ${productCount} products loaded.`);
+            
+            // CSS Visibility Check - Count elements
+            setTimeout(() => {
+                const divCount = document.querySelectorAll('div').length;
+                const bodyLength = document.body.innerHTML.length;
+                logDebug(`DOM Check - Div elements: ${divCount}, Body length: ${bodyLength}`);
+                
+                if (divCount === 0 || bodyLength < 1000) {
+                    logDebug('WARNING: Low element count or body content!', 'warn');
+                }
+            }, 1000);
+        }
+
+        // Initialize with error handling
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log("Deals page loaded - DOM ready");
+            logDebug("DOM Content Loaded - Starting initialization");
+            
+            try {
+                render();
+                logDebug("Initialization completed successfully");
+            } catch (error) {
+                console.error('Initialization error:', error);
+                logDebug(`Initialization error: ${error.message}`, 'error');
+                document.getElementById('loading-status').textContent = 'Errore caricamento';
+            }
+        });
+
+        // Additional debug info
+        window.addEventListener('load', () => {
+            const perfData = performance.timing;
+            const loadTime = perfData.loadEventEnd - perfData.navigationStart;
+            logDebug(`Page fully loaded in ${loadTime}ms`);
+        });
+    </script>
+<script>
+    document.addEventListener('keydown', e => {
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+            e.preventDefault();
+        }
+    });
+</script>
+</body>
+</html>

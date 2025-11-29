@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Pagina Non Trovata | Oculandia VR</title>
+    <link rel="icon" href="icons/icon-512.png" type="image/png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --dark-blue: #0D1B2A;
+            --medium-blue: #1B263B;
+            --accent-green: #00A859;
+            --accent-red: #CE2B37;
+            --pure-white: #FFFFFF;
+        }
+
+        body {
+            background: var(--dark-blue);
+            color: var(--pure-white);
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+        }
+
+        .orbitron {
+            font-family: 'Orbitron', monospace;
+        }
+
+        .error-container {
+            background: linear-gradient(135deg, var(--dark-blue) 0%, var(--medium-blue) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .error-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(0, 168, 89, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(206, 43, 55, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .glitch {
+            position: relative;
+            animation: glitch 2s infinite;
+        }
+
+        @keyframes glitch {
+            0%, 100% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+        }
+
+        .btn-primary {
+            background: var(--accent-green);
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: #00C96E;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 168, 89, 0.3);
+        }
+
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .nav-bottom {
+            background: rgba(27, 38, 59, 0.95);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-item {
+            transition: all 0.3s ease;
+        }
+
+        .nav-item:hover {
+            color: var(--accent-green);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body class="error-container min-h-screen flex items-center justify-center">
+    <div class="text-center z-10 px-4 max-w-4xl mx-auto">
+        <!-- Error Code -->
+        <div class="glitch mb-8">
+            <h1 class="orbitron text-8xl md:text-9xl font-black text-red-500 mb-4">404</h1>
+        </div>
+
+        <!-- Floating VR Icon -->
+        <div class="floating mb-8">
+            <div class="w-24 h-24 mx-auto bg-gradient-to-br from-red-500 to-red-700 rounded-2xl flex items-center justify-center shadow-2xl">
+                <svg class="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M21 4H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H3V6h18v12z"/>
+                    <circle cx="12" cy="12" r="2"/>
+                    <path d="M12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"/>
+                </svg>
+            </div>
+        </div>
+
+        <!-- Error Message -->
+        <h2 class="orbitron text-3xl md:text-4xl font-bold mb-4 text-white">
+            Realtà Virtuale Non Trovata
+        </h2>
+        
+        <p class="text-lg md:text-xl text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed">
+            Sembra che tu sia finito in una dimensione parallela! La pagina che stai cercando non esiste in questo universo.
+        </p>
+
+        <!-- Action Buttons -->
+        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
+            <a href="index.html" class="btn-primary px-8 py-4 rounded-xl font-semibold text-white inline-flex items-center gap-3 hover:scale-105 transition-all">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+                </svg>
+                Torna alla Home
+            </a>
+            
+            <button onclick="history.back()" class="px-8 py-4 rounded-xl font-semibold text-white border-2 border-gray-600 hover:border-gray-400 hover:bg-gray-800 transition-all inline-flex items-center gap-3">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                </svg>
+                Torna Indietro
+            </button>
+        </div>
+
+        <!-- Error Details -->
+        <div class="bg-black/30 backdrop-blur-sm rounded-2xl p-6 max-w-md mx-auto">
+            <h3 class="orbitron font-semibold text-green-400 mb-3">Codice Errore</h3>
+            <p class="text-sm text-gray-400 mb-2">HTTP Status: 404 Not Found</p>
+            <p class="text-sm text-gray-400">Timestamp: <span id="timestamp"></span></p>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="nav-bottom fixed bottom-0 left-0 right-0 z-30">
+        <div class="flex items-center justify-around py-3">
+            <a href="index.html" class="nav-item flex-1 flex flex-col items-center justify-center gap-1 min-h-[56px] select-none">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+                </svg>
+                <span class="text-xs">Home</span>
+            </a>
+            <a href="events.html" class="nav-item flex-1 flex flex-col items-center justify-center gap-1 min-h-[56px] select-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                </svg>
+                <span class="text-xs">Eventi</span>
+            </a>
+            <a href="deals.html" class="nav-item flex-1 flex flex-col items-center justify-center gap-1 min-h-[56px] select-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+                </svg>
+                <span class="text-xs">Sconti</span>
+            </a>
+            <a href="shop.html" class="nav-item flex-1 flex flex-col items-center justify-center gap-1 min-h-[56px] select-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                </svg>
+                <span class="text-xs">Shop</span>
+            </a>
+        </div>
+    </nav>
+
+    <script>
+        // Set timestamp
+        document.getElementById('timestamp').textContent = new Date().toLocaleString('it-IT');
+        
+        // Add some interactive effects
+        document.addEventListener('mousemove', (e) => {
+            const mouseX = e.clientX / window.innerWidth;
+            const mouseY = e.clientY / window.innerHeight;
+            
+            const glitch = document.querySelector('.glitch');
+            if (glitch) {
+                glitch.style.transform = `translate(${mouseX * 4 - 2}px, ${mouseY * 4 - 2}px)`;
+            }
+        });
+    </script>
+<script>
+    document.addEventListener('keydown', e => {
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+            e.preventDefault();
+        }
+    });
+</script>
+</body>
+</html>

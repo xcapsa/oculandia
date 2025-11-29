@@ -1,0 +1,28 @@
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://www.oculandiavr.it/sitemap.xml
+
+# Block admin and sensitive areas
+Disallow: /admin/
+Disallow: /config/
+Disallow: /logs/
+Disallow: /*.json$
+Disallow: /*.log$
+Disallow: /*.ini$
+Disallow: /*.sh$
+
+# Allow crawling of main content
+Allow: /index.html
+Allow: /deals.html
+Allow: /events.html
+Allow: /social.html
+Allow: /shop.html
+Allow: /minecraft.html
+Allow: /profile.html
+Allow: /login.html
+Allow: /register.html
+
+# Crawl delay for polite crawling
+Crawl-delay: 1
